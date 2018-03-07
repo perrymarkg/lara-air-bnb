@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +15,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username',
+        'email', 
+        'password',
+        'first_name',
+        'last_name',
+        'phone',
+        'address'
     ];
 
     /**
@@ -24,6 +30,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'user_type',
+        'password', 
+        'remember_token',
     ];
+
+    function listings(){
+        return $this->hasMany('App\Models\Listing');
+    }
 }

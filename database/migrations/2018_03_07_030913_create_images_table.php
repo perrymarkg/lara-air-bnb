@@ -16,7 +16,7 @@ class CreateImagesTable extends Migration
         //
         Schema::create('listing_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->int('listing_id');
+            $table->integer('listing_id');
             $table->text('image');
             $table->string('description');
         });
@@ -30,5 +30,6 @@ class CreateImagesTable extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('listing_images');
     }
 }

@@ -17,6 +17,7 @@ class CreateCountriesTable extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('code');
         } );
     }
 
@@ -28,5 +29,6 @@ class CreateCountriesTable extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('countries');
     }
 }

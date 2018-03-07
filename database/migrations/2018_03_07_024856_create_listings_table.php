@@ -16,16 +16,18 @@ class CreateListingsTable extends Migration
         //
         Schema::create('listings', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('title');
             $table->text('description');
             $table->text('rules');
             $table->text('cancellation');
-            $table->int('max_adults');
-            $table->int('max_kids');
-            $table->int('bedrooms');
-            $table->int('beds');
-            $table->int('baths');
-            $table->int('country');
+            $table->integer('max_adults');
+            $table->integer('max_kids');
+            $table->integer('bedrooms');
+            $table->integer('beds');
+            $table->integer('baths');
+            $table->integer('country_id');
+            $table->timestamps();
         } );
     }
 
@@ -37,5 +39,6 @@ class CreateListingsTable extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('listings');
     }
 }
