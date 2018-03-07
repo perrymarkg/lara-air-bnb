@@ -19,6 +19,7 @@ class CreateImagesTable extends Migration
             $table->integer('listing_id');
             $table->text('image');
             $table->string('description');
+            $table->integer('sort_order');
         });
     }
 

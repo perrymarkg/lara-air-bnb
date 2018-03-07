@@ -14,4 +14,8 @@ class Listing extends Model
     function country(){
         return $this->belongsTo('App\Models\Country');
     }
+
+    function images(){
+        return $this->hasMany('App\Models\ListingImage', 'listing_id');
+    }
 }
