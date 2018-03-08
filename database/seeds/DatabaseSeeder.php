@@ -96,7 +96,7 @@ class DatabaseSeeder extends Seeder
             ->listings()
             ->save( $listing )
             ->each( function($listing) { 
-                $this->createListingImages( $listing );
+                // $this->createListingImages( $listing );
              } );
         }
     }

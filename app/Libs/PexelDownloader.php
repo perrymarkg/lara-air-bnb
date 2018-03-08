@@ -10,19 +10,18 @@ class PexelDownloader {
     function __construct()
     {
         $this->storagePath = storage_path('app\pexels');
-        //$this->createDownloadDir();
+        $this->createDownloadDir();
     }
 
     function createDownloadDir()
     {
-        $this->storagePath = storage_path('app\pexels');
         if( !file_exists( $this->storagePath) )
             mkdir($this->storagePath, 0755, true);
     }
 
     function setExtraPath( $extraPath )
     {
-        $this->storagePage = $this->storagePath . '/' . $extraPath;
+        $this->storagePath = $this->storagePath . '/' . $extraPath;
         $this->createDownloadDir();
     }
 

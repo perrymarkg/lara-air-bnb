@@ -15,25 +15,23 @@ class PexelDownloaderTest extends TestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->downloader = new PexelDownloader();
     }
 
     public function testSettingAdditionalPath()
     {
         
-        storage_path('test');
-       /*  $this->downloader->createDownloadDir();
         $path = $this->downloader->getStoragePath();
- */
-        /* $this->downloader->setExtraPath('houses');
+
+        $this->downloader->setExtraPath('houses');
 
         $newPath = $this->downloader->getStoragePath();
- */
-        $this->assertTrue(true);
-        //$this->assertEquals( $path + '/hosues', $newPath );
+
+        $this->assertEquals( $path . '/houses', $newPath );
     }
 
-     public function testGetFilePath()
+    public function testGetFilePath()
     {
         $downloader = new PexelDownloader();
         $image_url = 'https://static.pexels.com/photos/269077/pexels-photo-269077.jpeg';
@@ -41,8 +39,8 @@ class PexelDownloaderTest extends TestCase
         $res = $downloader->getFilePath( $image_url );
         $this->assertEquals( $res, 'pexels-photo-269077.jpeg');
     }
-    /*
-    public function testCanDownloadImage()
+    
+    /* public function testCanDownloadImage()
     {
         $file = $this->downloader->downloadImage( $image_url );
         $this->assertTrue( file_exists($file) );
