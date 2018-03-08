@@ -121,7 +121,7 @@ class DatabaseSeeder extends Seeder
 
     public function downloadSampleImages()
     {
-
+        $file = $this->readJsonFile();
     }
 
     

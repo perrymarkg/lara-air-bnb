@@ -5,21 +5,45 @@ namespace App\Libs;
 class PexelDownloader {
 
     private $storagePath;
+    private $additionalPath;
 
     function __construct()
     {
         $this->storagePath = storage_path('app\pexels');
-
-        if( !file_exists( $this->storagePath) )
-            mkdir($this->storagePath);
+        //$this->createDownloadDir();
     }
 
-    function downloadImage( $image_url )
+    function createDownloadDir()
     {
+        $this->storagePath = storage_path('app\pexels');
+        if( !file_exists( $this->storagePath) )
+            mkdir($this->storagePath, 0755, true);
+    }
+
+    function setExtraPath( $extraPath )
+    {
+        $this->storagePage = $this->storagePath . '/' . $extraPath;
+        $this->createDownloadDir();
+    }
+
+    function getStoragePath()
+    {
+        return $this->storagePath;
+    }
+
+    function downloadImages( $images )
+    {
+        foreach($images as $image){
+            $this->downloadImage($image);
+        }
+    }
+
+    function downloadImage( $imageUrl )
+    {
+
+        $filePath = $this->getFilePath( $imageUrl );
         
-        $filePath = $this->getFilePath( $image_url );
-        
-        $data = $this->getUrldata( $image_url, $filePath );
+        $data = $this->getUrldata( $imageUrl, $filePath );
         
         $this->writeDataToFIle( $data, $filePath );
 
