@@ -96,7 +96,7 @@ class DatabaseSeeder extends Seeder
             ->listings()
             ->save( $listing )
             ->each( function($listing) { 
-                // $this->createListingImages( $listing );
+                $this->createListingImages( $listing );
              } );
         }
     }
@@ -113,15 +113,15 @@ class DatabaseSeeder extends Seeder
             $image = [];
             $image['image'] = $this->faker->image( $imagePath , '600', '480', 'city') . rand(1,10);
             $image['description'] = $this->faker->paragraph();
-            $image['order'] = $x+1;
-            $listing->images->save( $image );
+            $image['sort_order'] = $x+1;
+            $listing->images()->save( new Image($image) );
         }
 
     }
 
     public function downloadSampleImages()
     {
-        $file = $this->readJsonFile();
+        $file = $this->readJsonFile( base_path() . '/house-images.json' );
     }
 
     

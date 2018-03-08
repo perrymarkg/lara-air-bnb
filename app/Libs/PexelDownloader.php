@@ -19,28 +19,31 @@ class PexelDownloader {
             mkdir($this->storagePath, 0755, true);
     }
 
-    function setExtraPath( $extraPath )
-    {
-        $this->storagePath = $this->storagePath . '/' . $extraPath;
-        $this->createDownloadDir();
-    }
-
     function getStoragePath()
     {
         return $this->storagePath;
     }
 
-    function downloadImages( $images )
+    function downloadImages( $images, $folder = '' )
     {
+        $result = [];
         foreach($images as $image){
-            $this->downloadImage($image);
+            $result[] = $this->downloadImage($image, $folder );
         }
+        return $result;
     }
 
-    function downloadImage( $imageUrl )
+    function downloadImage( $imageUrl, $folder = '' )
     {
 
-        $filePath = $this->getFilePath( $imageUrl );
+        if( $folder && !file_exists( $this->storagePath . '/' . $folder ) ){
+            mkdir( $this->storagePath . '/' . $folder, 0755, true );
+        }
+
+        if( $folder )
+            $folder = $folder . '/';
+
+        $filePath = $this->getFilePath( $imageUrl, $folder );
         
         $data = $this->getUrldata( $imageUrl, $filePath );
         
@@ -72,7 +75,8 @@ class PexelDownloader {
         return end( $array );
     }
     
-    function getFilePath( $image_url ) {
-        return $this->storagePath . '/' . $this->getFileName( $image_url );
+    function getFilePath( $image_url, $folder = '') {
+        return $this->storagePath . '/' . $folder . $this->getFileName( $image_url );
     }
+
 }

@@ -20,6 +20,7 @@ class CreateImagesTable extends Migration
             $table->text('image');
             $table->string('description');
             $table->integer('sort_order');
+            $table->timestamps();
         });
     }
 

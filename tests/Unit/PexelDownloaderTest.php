@@ -19,32 +19,38 @@ class PexelDownloaderTest extends TestCase
         $this->downloader = new PexelDownloader();
     }
 
-    public function testSettingAdditionalPath()
-    {
-        
-        $path = $this->downloader->getStoragePath();
-
-        $this->downloader->setExtraPath('houses');
-
-        $newPath = $this->downloader->getStoragePath();
-
-        $this->assertEquals( $path . '/houses', $newPath );
-    }
-
-    public function testGetFilePath()
+    public function testGetFileNameFromUrl()
     {
         $downloader = new PexelDownloader();
         $image_url = 'https://static.pexels.com/photos/269077/pexels-photo-269077.jpeg';
 
-        $res = $downloader->getFilePath( $image_url );
+        $res = $downloader->getFileName( $image_url );
         $this->assertEquals( $res, 'pexels-photo-269077.jpeg');
     }
     
-    /* public function testCanDownloadImage()
+    public function testCanDownloadImage()
     {
-        $file = $this->downloader->downloadImage( $image_url );
+        $file = $this->downloader->downloadImage( $this->image_url );
         $this->assertTrue( file_exists($file) );
-    } */
+    }
+
+    public function testCanDownoadImageToFolder()
+    {
+        $file = $this->downloader->downloadImage( $this->image_url, 'houses');
+        $this->assertTrue( file_exists($file) );
+    }
+
+    public function testCanDownloadMultipleImages()
+    {
+        $images = [
+            'https://static.pexels.com/photos/279719/pexels-photo-279719.jpeg',
+            'https://static.pexels.com/photos/323775/pexels-photo-323775.jpeg'
+        ];
+
+        $results = $this->downloader->downloadImages( $images, 'houses' );
+        foreach($results as $file)
+            $this->assertTrue( file_exists($file) );
+    }
 
     
 }
