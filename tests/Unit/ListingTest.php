@@ -24,7 +24,7 @@ class ListingTest extends TestCase
 
     public function testRetrieveCountryFromListing() {
 
-        $listing = Listing::find(3);
+        $listing = Listing::find(1);
         $this->assertTrue( is_int($listing->country_id) );
         $country = Country::find($listing->country_id);
         $this->assertEquals( $listing->country->name, $country->name );

@@ -10,7 +10,7 @@ use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
-    private $total_countries = 0;
+    private $totalCountries = 0;
     private $usersCount = 1;
     private $listingsCount = 1;
     private $imagesCount = 1;
@@ -31,39 +31,44 @@ class DatabaseSeeder extends Seeder
         $this->faker = Faker::create();
         
         $this->path = storage_path('app\user_files');
-        $this->create_user_files_dir();
+        $this->createUserFilesDir();
 
         // Create
-        $this->create_countries();
+        $this->createCountries();
 
-        $this->create_users();
+        $this->createUsers();
     }
 
-    public function create_countries()
+    public function readJsonFile( $file )
+    {
+        return json_decode( file_get_contents( $file ), true );
+    }
+
+    public function createCountries()
     {
         print "Adding Countries ... ";
-        $countries = json_decode( file_get_contents( base_path() . '/countries.json' ), true );
+        $countries = $this->readJsonFile( base_path() . '/countries.json' );
         foreach( $countries as $country ){
             $c = new Country( $country );
             $c->save();
         }
-        $this->total_countries = count( $countries );
+        $this->totalCountries = count( $countries );
         print " done \n";
     }
 
-    public function create_users()
+    public function createUsers()
     {
         print "Creating Users, listings, images ...";
         factory(User::class, $this->usersCount)
         ->create()
         ->each( function( $user ) {
-            $this->create_user_storage( $user->id );
-            $this->create_listing($user);
+            $this->createUserStorage( $user->id );
+            $this->createListing($user);
         } );
         print "done \n";
     }
 
-    function create_user_files_dir()
+    function createUserFilesDir()
     {
         if( !file_exists($this->path) )
             mkdir($this->path);
@@ -71,7 +76,7 @@ class DatabaseSeeder extends Seeder
         $this->path = $this->path . '\\';
     }
 
-    public function create_user_storage( $user_id ) 
+    public function createUserStorage( $user_id ) 
     {
         $user_path = $this->path . md5($user_id);
 
@@ -80,37 +85,42 @@ class DatabaseSeeder extends Seeder
 
     }
 
-    public function create_listing( $user )
+    public function createListing( $user )
     {
         $listings = factory(Listing::class, $this->listingsCount)->make();
 
         foreach ( $listings as $listing ) {
                 
-            $listing['country_id'] = rand( 1, $this->total_countries );
+            $listing['country_id'] = rand( 1, $this->totalCountries );
             $user
             ->listings()
             ->save( $listing )
             ->each( function($listing) { 
-                $this->create_listing_images( $listing );
+                $this->createListingImages( $listing );
              } );
         }
     }
 
-    public function create_listing_images( $listing )
+    public function createListingImages( $listing )
     {
         // @Todo: Improve
         // Not using factory here since we can't pass 
         // the user id to the $faker->image() method 
         // to save downloaded images from faker
 
-        $image_path = $this->path . md5($listing->user->id);
+        $imagePath = $this->path . md5($listing->user->id);
         for( $x = 0; $x < $this->imagesCount; $x++ ) {
             $image = [];
-            $image['image'] = $this->faker->image( $image_path , '600', '480', 'city') + rand(1,10);
+            $image['image'] = $this->faker->image( $imagePath , '600', '480', 'city') . rand(1,10);
             $image['description'] = $this->faker->paragraph();
             $image['order'] = $x+1;
             $listing->images->save( $image );
         }
+
+    }
+
+    public function downloadSampleImages()
+    {
 
     }
 
