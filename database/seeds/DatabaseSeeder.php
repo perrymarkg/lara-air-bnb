@@ -6,15 +6,20 @@ use App\Models\Country;
 use App\Models\User;
 use App\Models\Listing;
 use App\Models\ListingImage as Image;
+use App\Libs\PexelDownloader;
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
     private $totalCountries = 0;
-    private $usersCount = 1;
+    private $hostsCount = 1;
     private $listingsCount = 1;
     private $imagesCount = 1;
+
+    private $houseImages;
     private $faker;
+
+    private $pexel;
 
     private $path;
 
@@ -31,12 +36,15 @@ class DatabaseSeeder extends Seeder
         $this->faker = Faker::create();
         
         $this->path = storage_path('app\user_files');
-        $this->createUserFilesDir();
+        
+        $this->houseImages = $this->readJsonFile( base_path() . '/house-images.json' );
+
+        $this->pexel = new PexelDownloader('app\user_files');
 
         // Create
         $this->createCountries();
 
-        $this->createUsers();
+        $this->createHosts();
     }
 
     public function readJsonFile( $file )
@@ -56,32 +64,26 @@ class DatabaseSeeder extends Seeder
         print " done \n";
     }
 
-    public function createUsers()
+    public function createHosts()
     {
         print "Creating Users, listings, images ...";
-        factory(User::class, $this->usersCount)
+        factory(User::class, $this->hostsCount)
         ->create()
         ->each( function( $user ) {
-            $this->createUserStorage( $user->id );
+            $user->user_type = 'host';
+            $user->save();
+            $this->createHostStorage( $user->id );
             $this->createListing($user);
         } );
         print "done \n";
     }
 
-    function createUserFilesDir()
+    public function createHostStorage( $host_id ) 
     {
-        if( !file_exists($this->path) )
-            mkdir($this->path);
-        
-        $this->path = $this->path . '\\';
-    }
+        $host_path = $this->path . '/' . md5($host_id);
 
-    public function createUserStorage( $user_id ) 
-    {
-        $user_path = $this->path . md5($user_id);
-
-        if( !file_exists($user_path) )
-            mkdir($user_path);
+        if( !file_exists($host_path) )
+            mkdir($host_path, 0755, true);
 
     }
 
@@ -108,21 +110,16 @@ class DatabaseSeeder extends Seeder
         // the user id to the $faker->image() method 
         // to save downloaded images from faker
 
-        $imagePath = $this->path . md5($listing->user->id);
         for( $x = 0; $x < $this->imagesCount; $x++ ) {
             $image = [];
-            $image['image'] = $this->faker->image( $imagePath , '600', '480', 'city') . rand(1,10);
-            $image['description'] = $this->faker->paragraph();
+            $imagePath = $this->pexel->downloadImage( $this->houseImages[0]['path'], md5($listing->user->id) );
+            $image['image'] = basename($imagePath);
+            $image['description'] = $this->faker->words(3, true);
             $image['sort_order'] = $x+1;
             $listing->images()->save( new Image($image) );
         }
 
     }
 
-    public function downloadSampleImages()
-    {
-        $file = $this->readJsonFile( base_path() . '/house-images.json' );
-    }
-
-    
+        
 }

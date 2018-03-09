@@ -7,9 +7,9 @@ class PexelDownloader {
     private $storagePath;
     private $additionalPath;
 
-    function __construct()
+    function __construct( $defaultPath = 'app\media' )
     {
-        $this->storagePath = storage_path('app\pexels');
+        $this->storagePath = storage_path( $defaultPath );
         $this->createDownloadDir();
     }
 
@@ -71,8 +71,12 @@ class PexelDownloader {
     }
 
     function getFileName( $image_url ) {
-        $array = explode( '/', str_replace('https://', '', $image_url) );
-        return end( $array );
+
+        if (strpos($image_url, '?') !== false) {
+            $t = explode('?', $image_url);
+            $image_url = $t[0];            
+        }
+        return basename($image_url);
     }
     
     function getFilePath( $image_url, $folder = '') {
