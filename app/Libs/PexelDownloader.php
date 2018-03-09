@@ -7,7 +7,7 @@ class PexelDownloader {
     private $storagePath;
     private $additionalPath;
 
-    function __construct( $defaultPath = 'app\media' )
+    function __construct( $defaultPath = 'app\sample_images' )
     {
         $this->storagePath = storage_path( $defaultPath );
         $this->createDownloadDir();
@@ -35,7 +35,7 @@ class PexelDownloader {
 
     function downloadImage( $imageUrl, $folder = '' )
     {
-
+        // Alternative http://image.intervention.io/api/make 
         if( $folder && !file_exists( $this->storagePath . '/' . $folder ) ){
             mkdir( $this->storagePath . '/' . $folder, 0755, true );
         }
@@ -52,16 +52,17 @@ class PexelDownloader {
         return $filePath;
     }
 
-    function getUrlData( $image_url, $file_path )
+    function getUrlData( $image_url )
     {
-        $ch = curl_init($image_url);
+        /* $ch = curl_init($image_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 200);
         //curl_setopt($ch, CURLOPT_VERBOSE, true); 
         curl_exec($ch);
         $result=curl_exec($ch);
         curl_close($ch); 
-        return $result;
+        return $result; */
+        return file_get_contents($image_url);
     }
 
     function writeDataToFile( $data, $filePath ){

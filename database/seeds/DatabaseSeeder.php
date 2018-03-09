@@ -6,6 +6,7 @@ use App\Models\Country;
 use App\Models\User;
 use App\Models\Listing;
 use App\Models\ListingImage as Image;
+use App\Models\Option;
 use App\Libs\PexelDownloader;
 use Faker\Factory as Faker;
 
@@ -39,12 +40,14 @@ class DatabaseSeeder extends Seeder
         
         $this->houseImages = $this->readJsonFile( base_path() . '/house-images.json' );
 
-        $this->pexel = new PexelDownloader('app\user_files');
+        $this->pexel = new PexelDownloader();
 
         // Create
-        $this->createCountries();
+        //$this->createCountries();
 
-        $this->createHosts();
+        $this->downloadSampleImages();
+
+        //$this->createHosts();
     }
 
     public function readJsonFile( $file )
@@ -64,9 +67,25 @@ class DatabaseSeeder extends Seeder
         print " done \n";
     }
 
+    public function downloadSampleImages()
+    {
+        print "Download Sample Images ... \n";
+        if( file_exists(storage_path('app\\.sample-houses')) ){
+            print "Sample houses already downloaded \n";
+            return;
+        }
+
+        $images = array_map( function( $images){
+            return $images['path'];
+        }, $this->houseImages);
+        $this->pexel->downloadImages( $images, 'houses' );
+        Storage::disk('local')->put('.sample-houses', 'Sample Houses Downloaded!');
+        print "Done \n";
+    }
+
     public function createHosts()
     {
-        print "Creating Users, listings, images ...";
+        print "Creating Hosts, listings, images ...";
         factory(User::class, $this->hostsCount)
         ->create()
         ->each( function( $user ) {
@@ -98,7 +117,7 @@ class DatabaseSeeder extends Seeder
             ->listings()
             ->save( $listing )
             ->each( function($listing) { 
-                $this->createListingImages( $listing );
+                //$this->createListingImages( $listing );
              } );
         }
     }
