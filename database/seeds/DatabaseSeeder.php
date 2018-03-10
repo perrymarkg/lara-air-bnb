@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
 
         $this->downloadSampleImages();
 
-        //$this->createHosts();
+        $this->createHosts();
     }
 
     public function readJsonFile( $file )
@@ -91,19 +91,15 @@ class DatabaseSeeder extends Seeder
         ->each( function( $user ) {
             $user->user_type = 'host';
             $user->save();
-            $this->createHostStorage( $user->id );
-            $this->createListing($user);
+            $this->createHostImages( $user );
+            //$this->createListing($user);
         } );
         print "done \n";
     }
 
-    public function createHostStorage( $host_id ) 
+    public function createHostImages( $user ) 
     {
-        $host_path = $this->path . '/' . md5($host_id);
-
-        if( !file_exists($host_path) )
-            mkdir($host_path, 0755, true);
-
+        $user->images()
     }
 
     public function createListing( $user )

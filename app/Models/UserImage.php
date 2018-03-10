@@ -8,5 +8,8 @@ class UserImage extends Model
 {
     //
 
-    
+    function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

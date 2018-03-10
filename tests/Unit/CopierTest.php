@@ -37,26 +37,25 @@ class CopierTest extends TestCase
     public function testCopyImage()
     {
         $file_to_copy = $this->houses[0];
-        $test_file = Copier::copy($file_to_copy, 'media/' . basename($file_to_copy) );
-        Storage::delete( str_replace('app/', '', $test_file) );
+        $test_file = Copier::copy( $file_to_copy, 'media/' . basename($file_to_copy) );
+        $this->assertTrue( Storage::exists($test_file) );
+        Storage::delete( $test_file);
     }
 
     public function testDuplicateName()
     {
         $test_files = [];
-        $file_to_copy = $this->houses[0];
+        $file_to_copy = $this->houses[0]; // sample_images/houses/{imagefile}.{ext}
+
         $dest = 'media/' . basename( $file_to_copy );
         $test_files[] = Copier::copy($file_to_copy, $dest);
         $new_file = Copier::duplicateName( 'app/' . $dest);
         $this->assertNotEquals( $dest, $new_file );
         
-        $test_files[] = Copier::copy($file_to_copy, $dest);
-        $this->assertTrue( file_exists( storage_path('app/'. $dest) ));
-
-        // Delete test files
-        $test_files = array_map( function($file){
-            return str_replace('app/', '', $file);
-        }, $test_files );
+        $copied_file = Copier::copy($file_to_copy, $dest);
+        $this->assertTrue( Storage::exists($copied_file) ) ;
+        $test_files[] = $copied_file;
+        
         Storage::delete($test_files);
     }
 

@@ -35,7 +35,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    function listings(){
+    function listings()
+    {
         return $this->hasMany('App\Models\Listing');
+    }
+
+    function images()
+    {
+        return $this->hasMany('App\Models\UserImage');
     }
 }
