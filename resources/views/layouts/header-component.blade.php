@@ -45,3 +45,6 @@
         </div>
     </div>
 </nav>
+
+@component('ui.notice-component')
+@endcomponent

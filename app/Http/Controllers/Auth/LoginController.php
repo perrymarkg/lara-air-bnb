@@ -54,20 +54,13 @@ class LoginController extends Controller
 
         return [
             $field => $request->get($this->username()),
-            'password' => $request->password,
+            'password' => $request->password
         ];
     }
     
     protected function redirectTo()
     {
-        $user = Auth::user();
-        if( $user->user_type == 'host') {
-            //echo 'I am host';
-            return 'http://www.google.com';
-        }
-        
-        
-        return '/path';
+        return '/';
     }
 
     
