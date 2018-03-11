@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -54,6 +55,18 @@ class LoginController extends Controller
             $field => $request->get($this->username()),
             'password' => $request->password,
         ];
+    }
+    
+    protected function redirectTo()
+    {
+        $user = Auth::user();
+        if( $user->user_type == 'host') {
+            //echo 'I am host';
+            return 'http://www.google.com';
+        }
+        
+        
+        return '/path';
     }
 
     
