@@ -41,4 +41,7 @@
     @endforeach
     
   </ul>
+<div class="mb-3 text-right">
+    <a href="{{ route('profile.account.edit') }}" class="btn btn-secondary">{{ __('Edit') }}</a>
+</div>
 @endsection

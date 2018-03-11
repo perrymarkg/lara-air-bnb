@@ -21,8 +21,15 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::prefix('profile')->group(function () {
     Route::namespace('Profile')->group(function () {
         // Controllers Within The "App\Http\Controllers\Profile" Namespace
-        Route::get('/', 'IndexController@index')->name('profile.index');
-        Route::get('/details/edit', 'IndexController@editDetails')->name('profile.details.edit');
-        Route::post('/details/edit', 'IndexController@updateDetails');
+        Route::get('/', 'IndexController@index')
+            ->name('profile.index');
+        Route::get('/details/edit', 'IndexController@editDetails')
+            ->name('profile.details.edit');
+        Route::post('/details/update', 'IndexController@updateDetails')
+            ->name('profile.details.update');
+        Route::get('/account/edit', 'IndexController@editAccount')
+            ->name('profile.account.edit');
+        Route::post('/account/update', 'IndexController@updateAccount')
+            ->name('profile.account.update');
     });
 });

@@ -46,28 +46,84 @@ class IndexController extends Controller
             'last_name.required' => 'Lastname field is required'
         ];
 
-        $validator = Validator::make( $request->only( $fields ), $rules, $messages);
+        $result = $this->validateForm( $request->only($fields), $rules, $messages );
+        if( $result ) return $result;
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput($request->only( $fields ));
-        }
-
-        try{
-            $user = User::find(Auth::user()->id);
-            $user->fill( $request->only($fields) );
-            $user->save();
-        } catch(\Illuminate\Database\QueryException $e) {
-            // @Todo - do something here?
-        }
+        $this->updateUser( $request->only($fields) );
         
         return redirect( route('profile.details.edit') )
             ->with('status', __('Details updated successfully') );
     }
 
-    public function test(Request $request)
+    public function editAccount(Request $request)
     {
-        return view('profile.edit-profile');
+        return view('profile.edit-account');
     }
+
+    public function updateAccount(Request $request)
+    {
+        $fields = [
+            'username',
+            'email',
+        ];
+
+        $rules = [
+            'username' => 'required|min:5|max:10',
+            'email' => 'required|email',
+        ];
+
+        $messages = [
+            'username.required' => 'Username field is required',
+            'username.min' => 'Username is too short, please use atleast 5 characters',
+            'username.max' => 'Username is too long, please use no more than 10 characters',
+            'email.required' => 'Email field is required',
+            'email.email' => 'Please provide a valid email'
+        ];
+
+        $result = $this->validateForm( $request->only($fields), $rules, $messages );
+        if( $result ) return $result;
+
+        $result = $this->updateUser( $request->only($fields) );
+        if($result) {
+            return redirect( route('profile.account.edit') )
+            ->withErrors($result);
+        }
+
+        return redirect( route('profile.account.edit') )
+            ->with('status', __('Account updated successfully') );
+    }
+
+    private function validateForm($input, $rules, $messages = null)
+    {
+        $validator = Validator::make( $input, $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput($input);
+        }
+    }
+
+    private function updateUser( $input )
+    {
+        try{
+            $user = User::find(Auth::user()->id);
+            $user->fill( $input );
+            $user->save();
+        } catch(\Illuminate\Database\QueryException $e) {
+            // @Todo - do something here?
+            $errors = [];
+            if( preg_match( '/Integrity constraint violation: 1062 Duplicate entry/', $e->getMessage() ) ){
+                if( preg_match('/username_unique/', $e->getMessage() ) )
+                    $errors[] = 'Username "'. $input['username'].'" is already taken';
+            }
+            return $errors;
+        }
+    }
+
+    private function processForm()
+    {
+
+    }
+    
 }

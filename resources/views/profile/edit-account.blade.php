@@ -1,15 +1,13 @@
 @extends('profile.base')
 
 @section('content')
-<h1>{{ __('Edit Details') }}</h1>
+<h1>{{ __('Edit Account') }}</h1>
 <hr>
 
 <?php
     $fields = [
-        'Firstname' => 'first_name',
-        'Lastname' => 'last_name',
-        'Address' => 'address',
-        'Phone' => 'phone',
+        'Username' => 'username',
+        'Email' => 'email',
     ];
 ?>
 
@@ -22,7 +20,7 @@
     @endcomponent
 @endif
 
-<form action="{{ route('profile.details.update') }}" method="post">
+<form action="{{ route('profile.account.update') }}" method="post">
     {{ csrf_field() }}
     @foreach($fields as $key => $val)
     <div class="form-group row">
