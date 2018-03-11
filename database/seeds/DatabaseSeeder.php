@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
         $this->pexel = new PexelDownloader();
 
         // Create
-        //$this->createCountries();
+        $this->createCountries();
 
         $this->downloadSampleImages();
 

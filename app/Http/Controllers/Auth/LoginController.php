@@ -40,11 +40,6 @@ class LoginController extends Controller
         $this->redirecTo = '/test';
     }
 
-    public function username()
-    {
-        return 'username';
-    }
-
     /**
      * Get the needed authorization credentials from the request.
      *

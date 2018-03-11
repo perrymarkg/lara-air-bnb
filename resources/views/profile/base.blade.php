@@ -3,7 +3,7 @@
 
 @section('sidebar')
 
-    @component('profile.sidebar-component', ['data' => $data])
+    @component('profile.sidebar-component')
     @endcomponent
 
 @endsection

@@ -16,4 +16,13 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/profile', 'Profile\IndexController@index')->name('profile');
+
+
+Route::prefix('profile')->group(function () {
+    Route::namespace('Profile')->group(function () {
+        // Controllers Within The "App\Http\Controllers\Profile" Namespace
+        Route::get('/', 'IndexController@index')->name('profile.index');
+        Route::get('/details/edit', 'IndexController@editDetails')->name('profile.details.edit');
+        Route::post('/details/edit', 'IndexController@updateDetails');
+    });
+});
