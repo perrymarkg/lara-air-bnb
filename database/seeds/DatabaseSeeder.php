@@ -4,10 +4,14 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Country;
 use App\Models\User;
+use App\Models\UserImage;
 use App\Models\Listing;
 use App\Models\ListingImage as Image;
 use App\Models\Option;
+
+use App\Libs\Copier;
 use App\Libs\PexelDownloader;
+
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
@@ -15,7 +19,7 @@ class DatabaseSeeder extends Seeder
     private $totalCountries = 0;
     private $hostsCount = 1;
     private $listingsCount = 1;
-    private $imagesCount = 1;
+    private $hostImagesCount = 5;
 
     private $houseImages;
     private $faker;
@@ -70,7 +74,7 @@ class DatabaseSeeder extends Seeder
     public function downloadSampleImages()
     {
         print "Download Sample Images ... \n";
-        if( file_exists(storage_path('app\\.sample-houses')) ){
+        if( Storage::exists('.sample-houses') ) {
             print "Sample houses already downloaded \n";
             return;
         }
@@ -79,7 +83,7 @@ class DatabaseSeeder extends Seeder
             return $images['path'];
         }, $this->houseImages);
         $this->pexel->downloadImages( $images, 'houses' );
-        Storage::disk('local')->put('.sample-houses', 'Sample Houses Downloaded!');
+        Storage::put('.sample-houses', 'Sample Houses Downloaded!');
         print "Done \n";
     }
 
@@ -92,14 +96,20 @@ class DatabaseSeeder extends Seeder
             $user->user_type = 'host';
             $user->save();
             $this->createHostImages( $user );
-            //$this->createListing($user);
+            $this->createListing($user);
         } );
         print "done \n";
     }
 
     public function createHostImages( $user ) 
     {
-        $user->images()
+        $images = Storage::files('sample_images/houses');
+        shuffle( $images );
+        $images = array_slice( $images, 0, $this->hostImagesCount );
+        foreach($images as $image){
+            $copied_file_path = Copier::copy( $image, 'media/' . basename($image) );
+            $user->images()->save( new UserImage( ['filename' => basename($copied_file_path)] ) );
+        }
     }
 
     public function createListing( $user )
@@ -112,27 +122,35 @@ class DatabaseSeeder extends Seeder
             $user
             ->listings()
             ->save( $listing )
-            ->each( function($listing) { 
-                //$this->createListingImages( $listing );
+            ->each( function($l) { 
+                $this->assignListingImage( $l );
              } );
         }
     }
 
-    public function createListingImages( $listing )
+    public function assignListingImage( $listing )
     {
-        // @Todo: Improve
-        // Not using factory here since we can't pass 
-        // the user id to the $faker->image() method 
-        // to save downloaded images from faker
-
-        for( $x = 0; $x < $this->imagesCount; $x++ ) {
-            $image = [];
-            $imagePath = $this->pexel->downloadImage( $this->houseImages[0]['path'], md5($listing->user->id) );
-            $image['image'] = basename($imagePath);
-            $image['description'] = $this->faker->words(3, true);
-            $image['sort_order'] = $x+1;
-            $listing->images()->save( new Image($image) );
+        
+        // Get User Id from listing
+        $user_id = $listing->user->id;
+        // Get Images from user_images
+        $images = UserImage::inRandomOrder()
+        ->where('user_id', $user_id)
+        ->take(5)
+        ->get();
+        $ctr = 0;
+        
+        foreach($images as $image) {
+            $listingImage['title'] = pathinfo($image['filename'], PATHINFO_FILENAME);
+            $listingImage['description'] = $this->faker->words(rand(1,3), true);
+            $listingImage['sort_order'] = $ctr;
+            $listingImage['user_image_id'] = $image['id'];
+            
+            $listing->images()->save( new Image($listingImage) );
+            $ctr++;
         }
+        
+        
 
     }
 

@@ -31,5 +31,7 @@ class CreateUserImages extends Migration
     {
         //
         Schema::dropIfExists('user_images');
+        $images = Storage::files('media');
+        Storage::delete($images);
     }
 }
