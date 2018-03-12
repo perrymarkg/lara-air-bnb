@@ -64,6 +64,13 @@ class ListingController extends Controller
         return $this->createListing($input);
     }
 
+    public function destroy($id)
+    {
+        Listing::destroy($id);
+        return redirect( route('profile.listings.index') )
+            ->with('status', __('Listing deleted successfully') );
+    }
+
     private function requestCleanInput(Request $request)
     {
         $fields = [

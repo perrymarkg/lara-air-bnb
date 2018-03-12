@@ -13,11 +13,8 @@
 @component('ui.error-component')
 @endcomponent
 
-@if (session('status'))
-    @component('ui.success-component')
-    {{ session('status') }}
-    @endcomponent
-@endif
+@component('ui.success-component')
+@endcomponent
 
 @component('profile.forms.listing', ['listing' => $listing, 'submit_url' => $submit_url, 'mode' => $mode])
 @endcomponent

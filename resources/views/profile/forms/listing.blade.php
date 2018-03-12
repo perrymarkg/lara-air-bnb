@@ -161,8 +161,17 @@
     </div>
     <div class="form-row">
         <div class="form-group col-md-12 text-right">
-            <a href="{{ route('profile.listings.index')}} " class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('profile.listings.index')}}" class="btn btn-secondary">Cancel</a>
+            @if( $mode == 'edit')
+                <a 
+                    href="{{ route('profile.listings.destroy', $listing->id)}}" 
+                    class="btn btn-danger prompt-delete"
+                    data-type="Listing"
+                    data-name="{{ $listing->title }}">Delete</a>
+            @endif
             <button class="btn btn-primary">Save</button>
         </div>
     </div>
 </form>
+@component('ui.prompt-delete')
+@endcomponent
