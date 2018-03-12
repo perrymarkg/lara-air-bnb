@@ -115,7 +115,7 @@ class IndexController extends Controller
             $errors = [];
             if( preg_match( '/Integrity constraint violation: 1062 Duplicate entry/', $e->getMessage() ) ){
                 if( preg_match('/username_unique/', $e->getMessage() ) )
-                    $errors[] = 'Username "'. $input['username'].'" is already taken';
+                    $errors[] = 'Unable to change username to "'. $input['username'].'"';
             }
             return $errors;
         }

@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Listing extends Model
 {
+    protected $fillable = [
+        'title', 'address', 'phone',
+        'price', 'type', 'max_kids', 'max_adults',
+        'bedrooms', 'beds', 'baths', 'description',
+        'rules', 'cancellation'
+    ];
     //
     function user(){
         return $this->belongsTo('App\Models\User');

@@ -17,16 +17,20 @@ class CreateListingsTable extends Migration
         Schema::create('listings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer('country_id');
+            $table->integer('type')->default(1);
             $table->string('title');
-            $table->text('description');
-            $table->text('rules');
-            $table->text('cancellation');
+            $table->string('address');
+            $table->float('price');
+            $table->string('phone')->nullable();
             $table->integer('max_adults');
             $table->integer('max_kids');
             $table->integer('bedrooms');
             $table->integer('beds');
             $table->integer('baths');
-            $table->integer('country_id');
+            $table->text('description');
+            $table->text('rules');
+            $table->text('cancellation');
             $table->timestamps();
         } );
     }

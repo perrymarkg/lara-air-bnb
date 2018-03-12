@@ -38,9 +38,13 @@ $factory->define(App\Models\Listing::class, function (Faker\Generator $faker) {
         'cancellation' => $faker->paragraph(),
         'max_adults' => $max_adults,
         'max_kids' => $max_adults - 2,
-        'bedrooms' => $faker->numberBetween(0, 2),
+        'bedrooms' => $faker->numberBetween(1, 3),
+        'price' => $faker->randomFloat(false, 10),
         'beds' => $faker->numberBetween(1, 3),
         'baths' => $faker->numberBetween(0, 3),
+        'address' => $faker->address(),
+        'type' => $faker->numberBetween(1,2),
+        'phone' => $faker->phoneNumber
     ];
 
 });

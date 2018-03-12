@@ -30,6 +30,13 @@ Route::group( ['prefix'=>'profile', 'namespace' => 'Profile', 'middleware' => 'n
             ->name('profile.account.edit');
         Route::post('/account/update', 'IndexController@updateAccount')
             ->name('profile.account.update');
+
+        // 'as' => to define prefix to access 'profile.listings.{action}'
+        Route::resource('listings', 'ListingController', ['as' => 'profile']);
+        /* Route::get('/listings', 'ListingController@index')
+            ->name('profile.listings');
+        Route::get('/listings/{listing}', 'ListingController@edit')
+            ->name('profile.listings.edit'); */
 });
 /*
 Route::prefix('profile')->group( function () {
