@@ -29,8 +29,14 @@ class AppHelper {
             $result = number_format($result, 2, '.', ',');
         }
             
-
         return $result;
+    }
+
+    public static function setSelectedOption($select_value, $old, $value)
+    {
+        $result = $old ? $old : $value;
+
+        return $select_value == $result ? 'selected' : '';
     }
 
 }

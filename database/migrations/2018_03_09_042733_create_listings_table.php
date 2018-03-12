@@ -28,9 +28,9 @@ class CreateListingsTable extends Migration
             $table->integer('bedrooms');
             $table->integer('beds');
             $table->integer('baths');
-            $table->text('description');
-            $table->text('rules');
-            $table->text('cancellation');
+            $table->text('description')->nullable();
+            $table->text('rules')->nullable();
+            $table->text('cancellation')->nullable();
             $table->timestamps();
         } );
     }

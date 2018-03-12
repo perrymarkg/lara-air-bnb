@@ -27,13 +27,14 @@
     </div>
     <div class="form-row">
         <div class="form-group col-md-4">
-            <label for="country">Country</label>
-            <select name="country" id="country" class="form-control">
-                    <option value=""></option>
+            <label for="country">Country</label> {{ old('country_id')}}
+            <select name="country_id" id="country" class="form-control">
+                
+                <option value=""></option>
                 @foreach(Country::all() as $country)
                     <option 
                         value="{{ $country->id}}" 
-                        {{ $country->id === $listing->country_id ? 'selected' : '' }}
+                        {{ Helper::setSelectedOption( $country->id, old('country_id'), $listing->country_id )  }}
                         >{{ $country->name }}</option>
                 @endforeach
             </select>
@@ -42,7 +43,8 @@
             <label for="phone">Phone</label>
             <input 
                 type="text" 
-                class="form-control" 
+                class="form-control"
+                name="phone"
                 id="phone"
                 value="{{ Helper::displayInputValue( old('phone'), $listing->phone ) }}"
                 />
@@ -72,7 +74,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ $x == $listing->max_kids ? 'selected' : '' }}
+                    {{ Helper::setSelectedOption( $x, old('max_kids'), $listing->max_kids )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -83,7 +85,7 @@
                 @for( $x = 1; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ $x == $listing->max_adults ? 'selected' : '' }}
+                    {{ Helper::setSelectedOption( $x, old('max_adults'), $listing->max_adults )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -96,7 +98,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ $x == $listing->bedrooms ? 'selected' : '' }}
+                    {{ Helper::setSelectedOption( $x, old('bedrooms'), $listing->bedrooms )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -107,7 +109,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ $x == $listing->beds ? 'selected' : '' }}
+                    {{ Helper::setSelectedOption( $x, old('beds'), $listing->beds )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -118,7 +120,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ $x == $listing->baths ? 'selected' : '' }}
+                    {{ Helper::setSelectedOption( $x, old('baths'), $listing->baths )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
