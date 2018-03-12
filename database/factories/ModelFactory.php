@@ -39,7 +39,7 @@ $factory->define(App\Models\Listing::class, function (Faker\Generator $faker) {
         'max_adults' => $max_adults,
         'max_kids' => $max_adults - 2,
         'bedrooms' => $faker->numberBetween(1, 3),
-        'price' => $faker->randomFloat(false, 10),
+        'price' => $faker->randomFloat(false, 10, 5000),
         'beds' => $faker->numberBetween(1, 3),
         'baths' => $faker->numberBetween(0, 3),
         'address' => $faker->address(),

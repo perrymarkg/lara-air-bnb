@@ -16,10 +16,10 @@ use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
-    private $totalCountries = 0;
-    private $hostsCount = 1;
-    private $listingsCount = 1;
-    private $hostImagesCount = 5;
+    private $totalCountries = 1;
+    private $hostsCount = 5;
+    private $listingsCount = 3;
+    private $hostImagesCount = 1;
 
     private $houseImages;
     private $faker;

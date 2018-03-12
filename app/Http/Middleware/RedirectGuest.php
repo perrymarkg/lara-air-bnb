@@ -16,7 +16,7 @@ class RedirectGuest
      */
     public function handle($request, Closure $next)
     {
-        if( ! Auth::guard()->check() ){
+        if( ! Auth::guard()->check() || Auth::user()->user_type !== 'host' ){
             return redirect('/')->with('notice', 'Invalid access');
         }
 

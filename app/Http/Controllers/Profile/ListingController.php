@@ -20,6 +20,11 @@ class ListingController extends Controller
 
     public function create()
     {
+        if( \Auth::user()->can('notCreate') ){
+            return redirect( route('profile.listings.index') )
+                ->withErrors(['Invalid access']);
+        }
+
         $data['listing'] = new Listing();
         $data['submit_url'] = route('profile.listings.store');
         $data['mode'] = 'create';
@@ -33,6 +38,11 @@ class ListingController extends Controller
 
     public function edit(Listing $listing)
     {
+        if( !\Auth::user()->can('access', $listing) ){
+            return redirect( route('profile.listings.index') )
+                ->withErrors(['Invalid access']);
+        }
+            
         $data['listing'] = $listing;
         $data['submit_url'] = route('profile.listings.update', $listing->id);
         $data['mode'] = 'edit';
@@ -41,7 +51,13 @@ class ListingController extends Controller
 
     public function update(Request $request, $id)
     {
-        // @Todo check if user can edit listing
+        $listing = Listing::find($id);
+
+        if( !\Auth::user()->can('access', $listing) ){
+            return redirect( route('profile.listings.index') )
+                ->withErrors(['Invalid access']);
+        }
+
         $input = $this->requestCleanInput($request);
 
         $result = $this->validateForm($input);
@@ -49,11 +65,16 @@ class ListingController extends Controller
             return $result;
         }
 
-        return $this->saveListing($input, $id);
+        return $this->saveListing($listing, $id);
     }
 
     public function store(Request $request)
     {
+        if( \Auth::user()->can('notCreate') ){
+            return redirect( route('profile.listings.index') )
+                ->withErrors(['Invalid access']);
+        }
+
         $input = $this->requestCleanInput($request);
 
         $result = $this->validateForm($input);
@@ -66,7 +87,15 @@ class ListingController extends Controller
 
     public function destroy($id)
     {
-        Listing::destroy($id);
+        $listing = Listing::find($id);
+        
+        if( !\Auth::user()->can('access', $listing) ){
+            return redirect( route('profile.listings.index') )
+                ->withErrors(['Invalid access']);
+        }
+
+        $listing->delete();
+
         return redirect( route('profile.listings.index') )
             ->with('status', __('Listing deleted successfully') );
     }
@@ -109,10 +138,9 @@ class ListingController extends Controller
         }
     }
 
-    private function saveListing($input, $id)
+    private function saveListing(Listing $listing, $id)
     {
         try{
-            $listing = Listing::find($id);
             $listing->fill( $input );
             $listing->country_id = $input['country_id'];
             $listing->save();
@@ -135,7 +163,7 @@ class ListingController extends Controller
             $listing->save();                
         } catch(\Illuminate\Database\QueryException $e) {
             return redirect()->back()
-                        ->withErrors(['Exception error occured' . $e->getMessage() .' | User: ' . \Auth::user()->id ])
+                        ->withErrors(['Exception error occured'])
                         ->withInput( $input );
         }
 

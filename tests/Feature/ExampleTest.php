@@ -20,4 +20,11 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testFeature()
+    {
+        $update = route('profile.listings.update', 1);
+        $response = $this->post($update);
+        $response->assertStatus(200);
+    }
 }

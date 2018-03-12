@@ -22,7 +22,7 @@
     @endcomponent
 @endif
 
-<form action="{{ route('profile.details.update') }}" method="post">
+<form action="{{ route('profile.details.update') }}" class="bg-white border rounded p-3" method="post">
     {{ csrf_field() }}
     @foreach($fields as $key => $val)
     <div class="form-group row">
@@ -39,6 +39,7 @@
     </div>
     @endforeach
     <div class="form-group text-right">
+        <a href="{{ route('profile.index') }}" class="btn btn-secondary">{{ __('Back') }}</a>
         <button class="btn btn-primary">{{ __('Save') }}</button>
     </div>
 </form>
