@@ -1,24 +1,25 @@
-(function($){
-    $(document).ready(function(){
-        $('a.prompt-delete').click( function(e){
-            e.preventDefault();
+var deleteModal = function(){
+    
+    var $modal = $('#promptDeleteModal');
+    var $form = $modal.find('form');
+    var $title = $modal.find('.modal-title');
+    var $name = $modal.find('.modal-body span');
 
-            $id = '#promptDeleteModal'
-            $el = $(this);
-            $modal = $($id);
-            $modalForm = $modal.find('form');
-            $title = $modal.find('.title');
-            $name = $modal.find('.modal-body span');
-            
-            $modal.modal('show');
-            $modalForm.attr('action', $el.attr('href'));
-            $title.html('Delete ' + $el.data('type') );
-            $name.html( $el.data('name') );
-            
-        })
+    $('a.prompt-delete').on('click', function(e){
+        e.preventDefault();
+        showModal(this);
+    });
 
-        $('#promptDeleteModal .proceed').click(function($e){
-            $('#promptDeleteForm').submit();
-        });
-    })
-})(jQuery)
+    $modal.find('.proceed').on('click', function(){
+        $form.submit();
+    });
+
+    function showModal(el){
+        $modal.modal('show');
+        $form.attr('action', $(el).attr('href') );
+        $title.html('Delete ' + $(el).data('type') );
+        $name.html( '"' + $(el).data('name') + '"');
+    }
+}
+
+module.exports = deleteModal;

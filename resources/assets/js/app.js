@@ -5,9 +5,6 @@
  */
 
 require('./bootstrap');
-require('./modal');
-
-
 window.Vue = require('vue');
 
 /**
@@ -21,3 +18,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 const app = new Vue({
     el: '#app'
 });
+
+// Main
+deleteModal = require('./modal');
+
+(function($){
+    $(document).ready(function (){
+        deleteModal();
+    });
+})(jQuery);

@@ -13798,8 +13798,6 @@ module.exports = __webpack_require__(44);
  */
 
 __webpack_require__(13);
-__webpack_require__(36);
-
 window.Vue = __webpack_require__(37);
 
 /**
@@ -13811,8 +13809,17 @@ window.Vue = __webpack_require__(37);
 Vue.component('example-component', __webpack_require__(40));
 
 var app = new Vue({
-  el: '#app'
+    el: '#app'
 });
+
+// Main
+deleteModal = __webpack_require__(36);
+
+(function ($) {
+    $(document).ready(function () {
+        deleteModal();
+    });
+})(jQuery);
 
 /***/ }),
 /* 13 */
@@ -35800,29 +35807,31 @@ module.exports = function spread(callback) {
 /* 36 */
 /***/ (function(module, exports) {
 
-(function ($) {
-    $(document).ready(function () {
-        $('a.prompt-delete').click(function (e) {
-            e.preventDefault();
+var deleteModal = function deleteModal() {
 
-            $id = '#promptDeleteModal';
-            $el = $(this);
-            $modal = $($id);
-            $modalForm = $modal.find('form');
-            $title = $modal.find('.title');
-            $name = $modal.find('.modal-body span');
+    var $modal = $('#promptDeleteModal');
+    var $form = $modal.find('form');
+    var $title = $modal.find('.modal-title');
+    var $name = $modal.find('.modal-body span');
 
-            $modal.modal('show');
-            $modalForm.attr('action', $el.attr('href'));
-            $title.html('Delete ' + $el.data('type'));
-            $name.html($el.data('name'));
-        });
-
-        $('#promptDeleteModal .proceed').click(function ($e) {
-            $('#promptDeleteForm').submit();
-        });
+    $('a.prompt-delete').on('click', function (e) {
+        e.preventDefault();
+        showModal(this);
     });
-})(jQuery);
+
+    $modal.find('.proceed').on('click', function () {
+        $form.submit();
+    });
+
+    function showModal(el) {
+        $modal.modal('show');
+        $form.attr('action', $(el).attr('href'));
+        $title.html('Delete ' + $(el).data('type'));
+        $name.html('"' + $(el).data('name') + '"');
+    }
+};
+
+module.exports = deleteModal;
 
 /***/ }),
 /* 37 */
