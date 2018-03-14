@@ -10,7 +10,7 @@ class DashboardController extends Controller
     //
     public function index()
     {
-        return view('layouts.app-admin');
+        return view('admin.dashboard');
     }
 
 }

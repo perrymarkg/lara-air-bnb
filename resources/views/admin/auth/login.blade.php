@@ -12,12 +12,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <div class="container">
+        <main class="container-fluid">
             <div class="row">
-                <div class="col-md-8 offset-md-2">
+                <div class="col-md-5 mx-auto mt-5">
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title"><h1>Admin Login</h1></div>
@@ -87,7 +88,6 @@
                             </form>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
