@@ -17,6 +17,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 
+
 Route::group( ['prefix'=>'profile', 'namespace' => 'Profile', 'middleware' => 'not.auth'], function (){
         // prefix = /profile/{route}
         // namespace = Controllers Within The "App\Http\Controllers\Profile" Namespace
@@ -38,3 +39,5 @@ Route::group( ['prefix'=>'profile', 'namespace' => 'Profile', 'middleware' => 'n
         Route::get('/listings/{listing}', 'ListingController@edit')
             ->name('profile.listings.edit'); */
 });
+
+Route::get('/{url_slug}', 'Frontend\PageController@index')->name('page');

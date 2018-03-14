@@ -13,15 +13,23 @@ class Listing extends Model
         'rules', 'cancellation'
     ];
     //
-    function user(){
+    function user()
+    {
         return $this->belongsTo('App\Models\User');
     }
 
-    function country(){
+    function country()
+    {
         return $this->belongsTo('App\Models\Country');
     }
 
-    function images(){
+    function images()
+    {
         return $this->hasMany('App\Models\ListingImage', 'listing_id');
+    }
+
+    function bookings()
+    {
+        return $this->hasMany('App\Models\Booking');
     }
 }
