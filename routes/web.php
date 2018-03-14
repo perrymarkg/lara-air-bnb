@@ -16,6 +16,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+
+
 /**
  *  prefix = /profile/{route}
  *  namespace = Controllers Within The "App\Http\Controllers\Profile" Namespace
@@ -28,11 +30,10 @@ Route::group( ['prefix'=>'profile', 'namespace' => 'Profile', 'middleware' => 'n
     Route::get('/account/edit', 'IndexController@editAccount')->name('profile.account.edit');
     Route::post('/account/update', 'IndexController@updateAccount')->name('profile.account.update');
         
-    // 'as' => to define prefix to access 'profile.listings.{action}'
     Route::group(['middleware' => 'not.host'], function(){
-        Route::resource('listings', 'ListingController', ['as' => 'profile']); 
+        // 'as' => to define prefix to access 'profile.listings.{action}'
+        Route::resource('properties', 'PropertyController', ['as' => 'profile']); 
     });
-        
         
 });
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Listing;
+use App\Models\Property;
 
 class HomeController extends Controller
 {
@@ -20,7 +20,7 @@ class HomeController extends Controller
     
     public function index()
     {
-        $data['listings'] = Listing::all();
+        $data['properties'] = Property::all();
         return view('home', $data);
     }
 }

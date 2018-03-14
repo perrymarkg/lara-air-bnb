@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateListingImagesTable extends Migration
+class CreatePropertyImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class CreateListingImagesTable extends Migration
     public function up()
     {
         //
-        Schema::create('listing_images', function (Blueprint $table) {
+        Schema::create('property_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('listing_id');
+            $table->integer('property_id');
             $table->integer('user_image_id');
             $table->text('title');
             $table->text('description');
@@ -32,6 +32,6 @@ class CreateListingImagesTable extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('listing_images');
+        Schema::dropIfExists('property_images');
     }
 }

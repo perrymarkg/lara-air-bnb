@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ExampleTest extends TestCase
+class AccessTest extends TestCase
 {
     private $user;
     public function setUp()
@@ -48,17 +48,17 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testUserShouldNotAccessHostPages()
+    public function testUserShouldNotAccessHostProperties()
     {
         $this->user->user_type = 'user';
-        $response = $this->actingAs($this->user)->get('/profile/listings');
+        $response = $this->actingAs($this->user)->get('/profile/properties');
         $response->assertStatus(302);
     }
 
     public function testHostCanAccessHostPages()
     {
         $this->user->user_type = 'host';
-        $response = $this->actingAs($this->user)->get('/profile/listings');
+        $response = $this->actingAs($this->user)->get('/profile/properties');
         $response->assertStatus(200);
     }
 

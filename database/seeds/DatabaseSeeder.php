@@ -2,15 +2,15 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Country;
+
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\Listing;
 use App\Models\ListingImage as Image;
 use App\Models\Option;
 
-use App\Libs\Copier;
-use App\Libs\PexelDownloader;
+
+
 
 use Faker\Factory as Faker;
 
@@ -38,7 +38,11 @@ class DatabaseSeeder extends Seeder
     {
         
         // Setup
-        $this->faker = Faker::create();
+        $this->call('CountriesSeeder');
+        $this->call('ImagesDownloader');
+        $this->call('TestUserSeeder');
+        $this->call('TestHostSeeder');
+        /* $this->faker = Faker::create();
         
         $this->path = storage_path('app\user_files');
         
@@ -51,9 +55,11 @@ class DatabaseSeeder extends Seeder
 
         $this->downloadSampleImages();
 
+        $this->create_test_accounts();
+
         $this->create_admin();
 
-        $this->createHosts();
+        $this->createHosts(); */
     }
 
     public function readJsonFile( $file )
@@ -71,6 +77,20 @@ class DatabaseSeeder extends Seeder
         }
         $this->totalCountries = count( $countries );
         print " done \n";
+    }
+
+    public function createTestAccounts()
+    {
+        print "Creating test accounts ... \n";
+        $admin = factory(User::class)->create();
+        $admin->username = 'admintest';
+        $admin->email = 'admin@admin.com';
+        $admin->user_type = 'admin';
+        $admin->save();
+        print "Admin: u: admintest p: secret \n";
+        $admin = factory(User::class)->create();
+
+        print "done\n";
     }
 
     public function downloadSampleImages()

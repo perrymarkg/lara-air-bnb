@@ -3,9 +3,9 @@
 @section('content')
 <h2>
     @if( $mode === 'create')
-        {{ __('New Listing') }}
+        {{ __('New Property') }}
     @else 
-        {{ __('Edit Listing') }}
+        {{ __('Edit Property') }}
     @endif
 </h2>
 <hr>
@@ -16,7 +16,7 @@
 @component('ui.success-component')
 @endcomponent
 
-@component('profile.forms.listing', ['listing' => $listing, 'submit_url' => $submit_url, 'mode' => $mode])
+@component('profile.forms.property', ['property' => $property, 'submit_url' => $submit_url, 'mode' => $mode])
 @endcomponent
 
 

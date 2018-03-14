@@ -39,4 +39,8 @@ class AppHelper {
         return $select_value == $result ? 'selected' : '';
     }
 
+    public static function readJSON( $file )
+    {
+        return json_decode( file_get_contents( $file ), true );
+    }
 }

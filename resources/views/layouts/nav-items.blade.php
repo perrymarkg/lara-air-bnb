@@ -9,23 +9,23 @@ elseif ( $type === 'sidebar') {
 
 // define active
 $profile = ['profile.index', 'profile.details.edit', 'profile.account.edit'];
-$listings = ['profile.listings.index', 'profile.listings.edit', 'profile.listings.create'];
+$properties = ['profile.properties.index', 'profile.properties.edit', 'profile.properties.create'];
 ?>
 <a href="{{ route('profile.index')}}" 
     class="{{ $class }} {{ Helper::isActiveRoute( $profile ) }}">
     {{ __('Profile') }}
 </a>
 @if( Auth::user()->user_type === 'host' )
-    <a href="{{ route('profile.listings.index') }}" 
-    class="{{ $class }} {{ Helper::isActiveRoute( $listings ) }}">
-        {{ __('Listings') }}
+    <a href="{{ route('profile.properties.index') }}" 
+    class="{{ $class }} {{ Helper::isActiveRoute( $properties ) }}">
+        {{ __('Properties') }}
     </a>
-    <a href="{{--  {{ route('profile.listings.index') }}  --}}" 
+    <a href="{{--  {{ route('profile.properties.index') }}  --}}" 
     class="{{ $class }} {{ Helper::isActiveRoute( [] ) }}">
-        {{ __('Listing Bookings') }}
+        {{ __('Property Bookings') }}
     </a>
 @endif
-<a href="{{--  {{ route('profile.listings.index') }}  --}}" 
+<a href="{{--  {{ route('profile.properties.index') }}  --}}" 
     class="{{ $class }} {{ Helper::isActiveRoute( [] ) }}">
         {{ __('Bookings') }}
     </a>

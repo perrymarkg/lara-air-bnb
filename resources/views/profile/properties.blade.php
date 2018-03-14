@@ -1,7 +1,7 @@
 @extends('profile.base')
 
 @section('content')
-<h1>{{__('My Listings')}}</h1>
+<h1>{{__('Properties')}}</h1>
 <hr>
 
 @component('ui.error-component')
@@ -13,7 +13,7 @@
 
 
 <div class="border rounded p-3 bg-white">
-    <a href="{{ route('profile.listings.create') }}" class="btn btn-primary mb-3">Add Listing</a>
+    <a href="{{ route('profile.properties.create') }}" class="btn btn-primary mb-3">Add Property</a>
     
     <table class="table">
         <thead>
@@ -25,24 +25,24 @@
             </tr>
         </thead>
         <tbody>
-            @if( count($listings) > 0 )
-            @foreach($listings as $listing)
+            @if( count($properties) > 0 )
+            @foreach($properties as $property)
                 <tr>
-                    <td>{{ $listing->title}}</td>
+                    <td>{{ $property->title}}</td>
                     <td>
-                        K: {{ $listing->max_kids }} | 
-                        A: {{ $listing->max_adults }} |
-                        B: {{ $listing->beds }} |
-                        b: {{ $listing->baths }} |
+                        K: {{ $property->max_kids }} | 
+                        A: {{ $property->max_adults }} |
+                        B: {{ $property->beds }} |
+                        b: {{ $property->baths }} |
                     </td>
-                    <td>{{ $listing->country->name }}</td>
+                    <td>{{ $property->country->name }}</td>
                     <td>
-                        <a href="{{ route('profile.listings.edit', $listing->id) }}">E</a> | 
+                        <a href="{{ route('profile.properties.edit', $property->id) }}">E</a> | 
                         <a 
-                            href="{{ route('profile.listings.destroy', $listing->id) }}" 
+                            href="{{ route('profile.properties.destroy', $property->id) }}" 
                             class="prompt-delete" 
-                            data-type="Listing"
-                            data-name="{{ $listing->title }}"
+                            data-type="Property"
+                            data-name="{{ $property->title }}"
                             >D</a>
                     </td>
                 </tr>

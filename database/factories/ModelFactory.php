@@ -27,13 +27,14 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-// Listings
-$factory->define(App\Models\Listing::class, function (Faker\Generator $faker) {
+// Properties
+$factory->define(App\Models\Property::class, function (Faker\Generator $faker) {
     $max_adults = $faker->numberBetween(1, 5);
 
     return [
         'title' => $faker->words( rand(1, 3), true ),
         'description' => $faker->paragraph(6),
+        'country_id' => Country::inRandomOrder()->first()->id,
         'rules' => $faker->paragraph(),
         'cancellation' => $faker->paragraph(),
         'max_adults' => $max_adults,
@@ -41,7 +42,7 @@ $factory->define(App\Models\Listing::class, function (Faker\Generator $faker) {
         'bedrooms' => $faker->numberBetween(1, 3),
         'price' => $faker->randomFloat(false, 10, 5000),
         'beds' => $faker->numberBetween(1, 3),
-        'baths' => $faker->numberBetween(0, 3),
+        'baths' => $faker->numberBetween(1, 3),
         'address' => $faker->address(),
         'type' => $faker->numberBetween(1,2),
         'phone' => $faker->phoneNumber

@@ -9,7 +9,7 @@
             <input 
                 type="text" 
                 class="form-control" 
-                value="{{ Helper::displayInputValue( old('title'), $listing->title) }}" 
+                value="{{ Helper::displayInputValue( old('title'), $property->title) }}" 
                 name="title" 
                 id="title"
                 />
@@ -22,7 +22,7 @@
                 name="address" 
                 id="address" 
                 class="form-control"
-                rows="2">{{ Helper::displayInputValue( old('address'), $listing->address) }}</textarea>
+                rows="2">{{ Helper::displayInputValue( old('address'), $property->address) }}</textarea>
         </div>
     </div>
     <div class="form-row">
@@ -34,7 +34,7 @@
                 @foreach(Country::all() as $country)
                     <option 
                         value="{{ $country->id}}" 
-                        {{ Helper::setSelectedOption( $country->id, old('country_id'), $listing->country_id )  }}
+                        {{ Helper::setSelectedOption( $country->id, old('country_id'), $property->country_id )  }}
                         >{{ $country->name }}</option>
                 @endforeach
             </select>
@@ -46,7 +46,7 @@
                 class="form-control"
                 name="phone"
                 id="phone"
-                value="{{ Helper::displayInputValue( old('phone'), $listing->phone ) }}"
+                value="{{ Helper::displayInputValue( old('phone'), $property->phone ) }}"
                 />
         </div>
         <div class="form-group col-md-4">
@@ -56,7 +56,7 @@
                 class="form-control" 
                 name="price" 
                 id="price"
-                value="{{ Helper::displayInputValue( old('price'), $listing->price, 'price' ) }}"
+                value="{{ Helper::displayInputValue( old('price'), $property->price, 'price' ) }}"
                 />
         </div>
     </div>
@@ -64,8 +64,8 @@
         <div class="form-group col-md-4">
             <label for="type">Listing Type</label>
             <select name="type" id="type" class="form-control">
-                <option value="1" {{ $listing->type === 1 ? 'selected' : ''}}>Whole House</option>
-                <option value="2" {{ $listing->type === 2 ? 'selected' : ''}}>Private Room</option>
+                <option value="1" {{ $property->type === 1 ? 'selected' : ''}}>Whole House</option>
+                <option value="2" {{ $property->type === 2 ? 'selected' : ''}}>Private Room</option>
             </select>
         </div>
         <div class="form-group col-md-4">
@@ -74,7 +74,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ Helper::setSelectedOption( $x, old('max_kids'), $listing->max_kids )  }}
+                    {{ Helper::setSelectedOption( $x, old('max_kids'), $property->max_kids )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -85,7 +85,7 @@
                 @for( $x = 1; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ Helper::setSelectedOption( $x, old('max_adults'), $listing->max_adults )  }}
+                    {{ Helper::setSelectedOption( $x, old('max_adults'), $property->max_adults )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -98,7 +98,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ Helper::setSelectedOption( $x, old('bedrooms'), $listing->bedrooms )  }}
+                    {{ Helper::setSelectedOption( $x, old('bedrooms'), $property->bedrooms )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -109,7 +109,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ Helper::setSelectedOption( $x, old('beds'), $listing->beds )  }}
+                    {{ Helper::setSelectedOption( $x, old('beds'), $property->beds )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -120,7 +120,7 @@
                 @for( $x = 0; $x <= 10; $x++)
                 <option 
                     value="{{ $x }}" 
-                    {{ Helper::setSelectedOption( $x, old('baths'), $listing->baths )  }}
+                    {{ Helper::setSelectedOption( $x, old('baths'), $property->baths )  }}
                     >{{ $x }}</option>
                 @endfor
             </select>
@@ -134,7 +134,7 @@
                 id="description"
                 class="form-control"
                 rows="10"
-                >{{ Helper::displayInputValue( old('description'), $listing->description )}}</textarea>
+                >{{ Helper::displayInputValue( old('description'), $property->description )}}</textarea>
         </div>
     </div>
     <div class="form-row">
@@ -145,7 +145,7 @@
                 id="rules"
                 class="form-control"
                 rows="3"
-                >{{ Helper::displayInputValue( old('rules'), $listing->rules )}}</textarea>
+                >{{ Helper::displayInputValue( old('rules'), $property->rules )}}</textarea>
         </div>
     </div>
     <div class="form-row">
@@ -156,18 +156,18 @@
                 id="cancellation"
                 class="form-control"
                 rows="3"
-                >{{ Helper::displayInputValue( old('cancellation'), $listing->cancellation )}}</textarea>
+                >{{ Helper::displayInputValue( old('cancellation'), $property->cancellation )}}</textarea>
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-12 text-right">
-            <a href="{{ route('profile.listings.index')}}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('profile.properties.index')}}" class="btn btn-secondary">Cancel</a>
             @if( $mode == 'edit')
                 <a 
-                    href="{{ route('profile.listings.destroy', $listing->id)}}" 
+                    href="{{ route('profile.properties.destroy', $property->id)}}" 
                     class="btn btn-danger prompt-delete"
-                    data-type="Listing"
-                    data-name="{{ $listing->title }}">Delete</a>
+                    data-type="Property"
+                    data-name="{{ $property->title }}">Delete</a>
             @endif
             <button class="btn btn-primary">Save</button>
         </div>

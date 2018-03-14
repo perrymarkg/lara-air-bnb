@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Listing extends Model
+class Property extends Model
 {
     protected $fillable = [
         'title', 'address', 'phone',
@@ -25,7 +25,7 @@ class Listing extends Model
 
     function images()
     {
-        return $this->hasMany('App\Models\ListingImage', 'listing_id');
+        return $this->hasMany('App\Models\PropertyImage', 'property_id');
     }
 
     function bookings()

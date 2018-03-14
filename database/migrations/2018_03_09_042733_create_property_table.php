@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateListingsTable extends Migration
+class CreatePropertyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateListingsTable extends Migration
     public function up()
     {
         //
-        Schema::create('listings', function (Blueprint $table) {
+        Schema::create('properties', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('country_id');
@@ -43,6 +43,6 @@ class CreateListingsTable extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('listings');
+        Schema::dropIfExists('properties');
     }
 }

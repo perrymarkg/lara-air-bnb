@@ -5,56 +5,56 @@ namespace App\Http\Controllers\Profile;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Listing;
+use App\Models\Property;
 use App\Models\Country;
 
-class ListingController extends Controller
+class PropertyController extends Controller
 {
     //
 
     public function index()
     {
-        $data['listings'] = Listing::where('user_id', \Auth::user()->id)->get();        
-        return view('profile.listings', $data);
+        $data['properties'] = Property::where('user_id', \Auth::user()->id)->get();        
+        return view('profile.properties', $data);
     }
 
     public function create()
     {
         if( \Auth::user()->can('notCreate') ){
-            return redirect( route('profile.listings.index') )
+            return redirect( route('profile.properties.index') )
                 ->withErrors(['Invalid access']);
         }
 
-        $data['listing'] = new Listing();
-        $data['submit_url'] = route('profile.listings.store');
+        $data['property'] = new Property();
+        $data['submit_url'] = route('profile.properties.store');
         $data['mode'] = 'create';
-        return view('profile.edit-listing', $data);
+        return view('profile.edit-property', $data);
     }
 
-    public function show(Listing $listing)
+    public function show(Property $property)
     {
-        return redirect( route('profile.listings.edit', $listing->id) );
+        return redirect( route('profile.properties.edit', $property->id) );
     }
 
-    public function edit(Listing $listing)
+    public function edit(Property $property)
     {
-        if( !\Auth::user()->can('access', $listing) ){
-            return redirect( route('profile.listings.index') )
+        if( !\Auth::user()->can('access', $property) ){
+            return redirect( route('profile.properties.index') )
                 ->withErrors(['Invalid access']);
         }
             
-        $data['listing'] = $listing;
-        $data['submit_url'] = route('profile.listings.update', $listing->id);
+        $data['property'] = $property;
+        $data['submit_url'] = route('profile.properties.update', $property->id);
         $data['mode'] = 'edit';
-        return view('profile.edit-listing', $data);
+        return view('profile.edit-property', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $listing = Listing::find($id);
+        $property = Property::find($id);
 
-        if( !\Auth::user()->can('access', $listing) ){
-            return redirect( route('profile.listings.index') )
+        if( !\Auth::user()->can('access', $property) ){
+            return redirect( route('profile.properties.index') )
                 ->withErrors(['Invalid access']);
         }
 
@@ -65,13 +65,13 @@ class ListingController extends Controller
             return $result;
         }
 
-        return $this->saveListing($listing, $id);
+        return $this->saveProperty($property, $input);
     }
 
     public function store(Request $request)
     {
         if( \Auth::user()->can('notCreate') ){
-            return redirect( route('profile.listings.index') )
+            return redirect( route('profile.properties.index') )
                 ->withErrors(['Invalid access']);
         }
 
@@ -82,22 +82,22 @@ class ListingController extends Controller
             return $result;
         }
 
-        return $this->createListing($input);
+        return $this->createProperty($input);
     }
 
     public function destroy($id)
     {
-        $listing = Listing::find($id);
+        $property = Property::find($id);
         
-        if( !\Auth::user()->can('access', $listing) ){
-            return redirect( route('profile.listings.index') )
+        if( !\Auth::user()->can('access', $property) ){
+            return redirect( route('profile.properties.index') )
                 ->withErrors(['Invalid access']);
         }
 
-        $listing->delete();
+        $property->delete();
 
-        return redirect( route('profile.listings.index') )
-            ->with('status', __('Listing deleted successfully') );
+        return redirect( route('profile.properties.index') )
+            ->with('status', __('Property deleted successfully') );
     }
 
     private function requestCleanInput(Request $request)
@@ -138,37 +138,37 @@ class ListingController extends Controller
         }
     }
 
-    private function saveListing(Listing $listing, $id)
+    private function saveProperty(Property $property, $input)
     {
         try{
-            $listing->fill( $input );
-            $listing->country_id = $input['country_id'];
-            $listing->save();
+            $property->fill( $input );
+            $property->country_id = $input['country_id'];
+            $property->save();
         } catch(\Illuminate\Database\QueryException $e) {
             return redirect()->back()
                         ->withErrors(['Exception error occured'])
                         ->withInput( $input );
         }
 
-        return redirect( route('profile.listings.edit', $id) )
-            ->with('status', __('Listing updated successfully') );
+        return redirect( route('profile.properties.edit', $property->id) )
+            ->with('status', __('Property updated successfully') );
     }
 
-    private function createListing($input)
+    private function createProperty($input)
     {
         try{
-            $listing = new Listing($input);
-            $listing->user_id = \Auth::user()->id;
-            $listing->country_id = $input['country_id'];
-            $listing->save();                
+            $property = new Property($input);
+            $property->user_id = \Auth::user()->id;
+            $property->country_id = $input['country_id'];
+            $property->save();                
         } catch(\Illuminate\Database\QueryException $e) {
             return redirect()->back()
                         ->withErrors(['Exception error occured'])
                         ->withInput( $input );
         }
 
-        return redirect( route('profile.listings.edit', $listing->id) )
-            ->with('status', __('Listing created successfully') );
+        return redirect( route('profile.properties.edit', $property->id) )
+            ->with('status', __('Property created successfully') );
     }
 
 }

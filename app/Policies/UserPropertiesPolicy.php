@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Listing;
+use App\Models\Property;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserListingPolicy
+class UserPropertiesPolicy
 {
     use HandlesAuthorization;
 
@@ -14,13 +14,13 @@ class UserListingPolicy
      * Determine whether the user can view the modelsListing.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Listing  $listing
+     * @param  \App\Models\Property  $property
      * @return mixed
      */
-    public function access(User $user, Listing $listing)
+    public function access(User $user, Property $property)
     {
         //
-        return $user->id === $listing->user_id;
+        return $user->id === $property->user_id;
     }
 
     public function notCreate(User $user)
