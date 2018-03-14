@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 
-class RedirectGuest
+class RedirectIfNotAdmin
 {
     /**
      * Handle an incoming request.
@@ -14,12 +13,11 @@ class RedirectGuest
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next, $guard = 'admin')
     {
-        if( ! Auth::guard($guard)->check() ){
-            return redirect('/')->with('notice', 'Invalid access');
+        if( ! \Auth::guard($guard)->check() ) {
+            return redirect('/admin/login');
         }
-
         return $next($request);
     }
 }

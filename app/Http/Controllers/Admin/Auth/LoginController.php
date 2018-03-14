@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -25,12 +22,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
+    
 
     /**
      * Create a new controller instance.
@@ -40,11 +32,11 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->redirecTo = '/test';
+        
     }
 
     /**
-     * Get the needed authorization credentials from the request and check if email or username.
+     * Get the needed authorization credentials from the request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -57,44 +49,33 @@ class LoginController extends Controller
 
         return [
             $field => $request->get($this->username()),
-            'password' => $request->password
+            'password' => $request->password,
+            'user_type' => 'admin'
         ];
     }
 
-    protected function attemptLogin(Request $request)
+    public function logout(Request $request)
     {
-        
-        if( !$this->validateNotAdmin($request) ) {
-            return false;
-        }
-        
-        return $this->guard()->attempt(
-            $this->credentials($request), 
-            $request->filled('remember')
-        );
-    }
+        $this->guard()->logout();
 
-    protected function validateNotAdmin(Request $request)
-    {
-        $creds = $this->credentials($request);
-        $keys = array_keys($creds);
-        try{
-            $conditions = [
-                [$keys[0], '=', $creds[$keys[0]] ],
-                ['user_type', '!=', 'admin']
-            ];
-            
-            User::where($conditions)->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return false;
-        }
+        $request->session()->invalidate();
 
-        return true;
+        return redirect( '/admin/login' );
     }
     
     protected function redirectTo()
     {
-        return '/';
+        return '/admin';
+    }
+
+    protected function guard()
+    {
+        return Auth::guard('admin');
+    }
+
+    public function showLoginForm()
+    {
+        return view('admin.auth.login');
     }
 
     
