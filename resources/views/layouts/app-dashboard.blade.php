@@ -12,16 +12,25 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        @component('components.header')
-        @endcomponent
-        
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+            
+        @section('header')
+        @show
+    
+        <div class="container-fluid">
+            <div class="row">
+                @section('sidebar')
+                @show
+                
+                <main class="col-md-10 ml-sm-auto pt-3">
+                    @yield('content')
+                </main>
+            </div>
+        </div>
+            
     </div>
 
     <!-- Scripts -->

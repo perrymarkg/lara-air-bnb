@@ -10,7 +10,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-
+                @component('components.nav-items')
+                @endcomponent
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -26,7 +27,7 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @component('layouts.nav-items', ['type' => 'dropdown'])
+                            @component('components.user-nav-items', ['type' => 'dropdown'])
                             @endcomponent
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -40,5 +41,5 @@
     </div>
 </nav>
 
-@component('ui.notice-component')
+@component('components.ui.notice')
 @endcomponent

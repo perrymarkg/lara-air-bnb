@@ -173,5 +173,5 @@
         </div>
     </div>
 </form>
-@component('ui.prompt-delete')
+@component('components.ui.prompt-delete')
 @endcomponent

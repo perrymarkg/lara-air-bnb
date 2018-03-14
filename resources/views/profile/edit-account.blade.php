@@ -11,11 +11,11 @@
     ];
 ?>
 
-@component('ui.error-component')
+@component('components.ui.error')
 @endcomponent
 
 @if (session('status'))
-    @component('ui.success-component')
+    @component('components.ui.success')
     {{ session('status') }}
     @endcomponent
 @endif

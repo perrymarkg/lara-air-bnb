@@ -16,7 +16,7 @@
 <body>
     <div id="app">
         
-        @component('layouts.header-component')
+        @component('components.header')
         @endcomponent
 
         <main class="py-4">

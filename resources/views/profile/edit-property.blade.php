@@ -10,10 +10,10 @@
 </h2>
 <hr>
 
-@component('ui.error-component')
+@component('components.ui.error')
 @endcomponent
 
-@component('ui.success-component')
+@component('components.ui.success')
 @endcomponent
 
 @component('profile.forms.property', ['property' => $property, 'submit_url' => $submit_url, 'mode' => $mode])

@@ -3,7 +3,7 @@
 
 @section('sidebar')
 
-    @component('profile.sidebar-component')
+    @component('profile.components.sidebar')
     @endcomponent
 
 @endsection

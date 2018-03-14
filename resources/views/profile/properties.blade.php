@@ -4,10 +4,10 @@
 <h1>{{__('Properties')}}</h1>
 <hr>
 
-@component('ui.error-component')
+@component('components.ui.error')
 @endcomponent
 
-@component('ui.success-component')
+@component('components.ui.success')
 @endcomponent
 
 
@@ -57,7 +57,7 @@
     
 </div>
 
-@component('ui.prompt-delete')
+@component('components.ui.prompt-delete')
 @endcomponent
 
 
