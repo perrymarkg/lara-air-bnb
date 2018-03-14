@@ -51,6 +51,8 @@ class DatabaseSeeder extends Seeder
 
         $this->downloadSampleImages();
 
+        $this->create_admin();
+
         $this->createHosts();
     }
 
@@ -85,6 +87,18 @@ class DatabaseSeeder extends Seeder
         $this->pexel->downloadImages( $images, 'houses' );
         Storage::put('.sample-houses', 'Sample Houses Downloaded!');
         print "Done \n";
+    }
+
+    public function create_admin()
+    {
+        print "Creating admin ...";
+        factory(User::class, 2)
+        ->create()
+        ->each( function ( $user) {
+            $user->user_type = 'admin';
+            $user->save();
+        });
+        print "done \n";
     }
 
     public function createHosts()

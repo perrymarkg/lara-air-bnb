@@ -3,12 +3,20 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExampleTest extends TestCase
 {
+    private $user;
+    public function setUp()
+    {
+        parent::setUp();
+        $this->user = factory(User::class)->create();
+    }
+
     /**
      * A basic test example.
      *
@@ -21,10 +29,38 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testFeature()
+    public function testGuestCannotAccessProfilePage()
     {
-        $update = route('profile.listings.update', 1);
-        $response = $this->post($update);
+        $response = $this->get('/profile');
+        $response->assertStatus(302);
+    }
+    
+    public function testUserOrHostCanAccessProfilePage()
+    {
+        
+        $this->user->user_type = 'host';
+
+        $response = $this->actingAs($this->user)->get('/profile');
+        $response->assertStatus(200);
+
+        $this->user->user_type = 'user';
+        $response = $this->actingAs($this->user)->get('/profile');
         $response->assertStatus(200);
     }
+
+    public function testUserShouldNotAccessHostPages()
+    {
+        $this->user->user_type = 'user';
+        $response = $this->actingAs($this->user)->get('/profile/listings');
+        $response->assertStatus(302);
+    }
+
+    public function testHostCanAccessHostPages()
+    {
+        $this->user->user_type = 'host';
+        $response = $this->actingAs($this->user)->get('/profile/listings');
+        $response->assertStatus(200);
+    }
+
+    
 }
