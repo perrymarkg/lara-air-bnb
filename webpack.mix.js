@@ -11,6 +11,7 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css')
-   .sass('resources/assets/sass/dashboard.scss', 'public/css');
+mix.js('resources/assets/js/app.js', 'public/js/app.js');
+mix.sass('resources/assets/sass/app.scss', 'public/css/app.css');
+mix.sass('resources/assets/sass/dashboard.scss', 'public/css/dashboard.css');
+mix.styles('node_modules/flatpickr/dist/flatpickr.min.css', 'public/css/flatpickr.css');

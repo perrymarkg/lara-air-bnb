@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+
 window.Vue = require('vue');
 
 /**
@@ -21,9 +22,18 @@ const app = new Vue({
 
 // Main
 deleteModal = require('./modal');
+date_picker = require('./date-range-picker');
+booking_calculator = require('./booking-calculator');
 
 (function($){
     $(document).ready(function (){
+        
         deleteModal();
+        booking_calculator.setRoomData(3)
+        
+        date_picker(booking_calculator.setBookingData);
+      
     });
+
 })(jQuery);
+

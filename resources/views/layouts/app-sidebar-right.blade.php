@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/flatpickr.css')}}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -22,10 +23,10 @@
         <main class="py-4">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         @yield('content')
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         @section('sidebar')
                         @show
                     </div>
