@@ -11,7 +11,7 @@ use Faker\Factory as Faker;
 class TestHostPropertiesSeeder extends Seeder
 {
 
-    private $property_count = 2;
+    private $property_count = 10;
 
     private $total_countries;
 

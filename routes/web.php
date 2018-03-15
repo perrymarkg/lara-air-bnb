@@ -16,6 +16,9 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::group(['namespace' => 'Frontend'], function(){
+    Route::get('/properties', 'PropertiesController@index')->name('properties.index');
+});
 
 
 /**
