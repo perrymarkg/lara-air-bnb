@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         $this->call('CountriesSeeder');
         $this->call('ImagesDownloader');
         $this->call('TestUserSeeder');
-        $this->call('TestHostSeeder');
+        $this->call('TestHostPropertiesSeeder');
         /* $this->faker = Faker::create();
         
         $this->path = storage_path('app\user_files');

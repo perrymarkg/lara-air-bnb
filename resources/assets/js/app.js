@@ -24,6 +24,7 @@ const app = new Vue({
 deleteModal = require('./modal');
 date_picker = require('./date-range-picker');
 booking_calculator = require('./booking-calculator');
+guest_picker = require('./guest-picker');
 
 (function($){
     $(document).ready(function (){
@@ -32,6 +33,7 @@ booking_calculator = require('./booking-calculator');
         booking_calculator.setRoomData(3)
         
         date_picker(booking_calculator.setBookingData);
+        guest_picker();
       
     });
 

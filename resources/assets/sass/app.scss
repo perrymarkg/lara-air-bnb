@@ -11,3 +11,35 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+.guest-picker-input {
+  cursor: pointer;
+}
+.guest-picker {
+  position: absolute;
+  display:none;
+  background:#ffffff;
+  width: 300px;
+  animation: fpFadeInDown 200ms cubic-bezier(.23,1,.32,1);
+
+  &:before {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    border: solid transparent;
+    content: '';
+    height: 0;
+    width: 0;
+    left: 22px;
+  }
+
+  .adult-input,
+  .child-input {
+    background:transparent;
+    width: 100%;
+  }
+
+  
+}
+
+@keyframes fpFadeInDown{from{opacity:0;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}to{opacity:1;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@keyframes fpFadeInDown{from{opacity:0;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}to{opacity:1;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}

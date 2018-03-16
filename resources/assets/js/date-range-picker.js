@@ -29,6 +29,7 @@ const date_range_picker = function( callback = null, checkIn = '#check_in', chec
         _checkOut.set("minDate", new Date(moment(selected[0]).add('1', 'days'))  );
 
         if( selected.length ) {
+            $(checkOut).next().focus();
             _checkOut.open();        
         }
     }
