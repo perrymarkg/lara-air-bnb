@@ -1,6 +1,13 @@
-@extends('layouts.app-sidebar-right')
+@extends('layouts.app')
 
-@section('sidebar')
-    @component('components.property-sidebar')
-    @endcomponent
+@section('content')
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @yield('contents')
+            </div>
+        </div>
+    </div>
+
 @endsection

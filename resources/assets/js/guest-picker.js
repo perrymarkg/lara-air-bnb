@@ -1,10 +1,10 @@
 module.exports = function(el = '#guests'){
     
     $input = $(el);
-    $clone = $input.clone().removeAttr('id').addClass('guest-picker-input');
+    $clone = $input.clone().removeAttr('id').attr('readonly', true).addClass('guest-picker-input');
 
     $clone.appendTo( $input.parent() );
-    $input.hide();
+    $input.attr('type', 'hidden');
 
     $('body').append('<div class="guest-picker border rounded p-2">\
     <div class="row mb-3"> \
@@ -37,7 +37,7 @@ module.exports = function(el = '#guests'){
 
     $clone.on('click', function (){
         $dropdown.css({
-            top: $(this).offset().top + $(this).outerHeight(),
+            top: $(this).offset().top + $(this).outerHeight() + 3,
             left: $(this).offset().left
         }).show();
     });
@@ -46,6 +46,7 @@ module.exports = function(el = '#guests'){
         e.preventDefault();
         $adult_input.val( parseInt($adult_input.val()) + 1 );
         $adult_minus.removeAttr('disabled');
+        compute_guests();
     })
 
     $adult_minus.on('click', function(e){
@@ -58,13 +59,14 @@ module.exports = function(el = '#guests'){
         } else {
             $(this).attr('disabled', true);
         }
-            
+        compute_guests();
     })
 
     $child_add.on('click', function (e){
         e.preventDefault();
         $child_input.val( parseInt($child_input.val()) + 1 );
         $child_minus.removeAttr('disabled');
+        compute_guests();
     })
 
     $child_minus.on('click', function(e){
@@ -77,25 +79,22 @@ module.exports = function(el = '#guests'){
         } else {
             $(this).attr('disabled', true);
         }
-            
+        compute_guests();
     })
-
-
     
-    /* $(el).clone().removeAttr('id').addClass('guest-picker-input').appendTo($(el).parent());
-    $(el).hide();
-    
-    $picker = $('.guest-picker');
+    // Hide dropdown
+    $(document).mouseup(function(e){
+        $target = $(e.target);
+        if( $target.attr('class') != $dropdown.attr('class') && !$dropdown.has($target).length ){
+            $dropdown.hide();
+        }
+    });
 
-    $(el).on('click', function(){
-        $(this).val('Changed');
-        $picker.css({            
-            top: $(this).offset().top + $(this).outerHeight(), 
-            left: $(this).offset().left
-        })
-        .show();
-    }); */
+    const compute_guests = function(){
+        total = parseInt($adult_input.val()) + parseInt($child_input.val());
+        $clone.val(total + ' Guests');
+        $input.val(total);
+        $input.change();
+    }
 
-    
-    
 }

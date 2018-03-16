@@ -1,6 +1,6 @@
 @extends('frontend.base')
 
-@section('content')
+@section('contents')
 <div class="row">
     @if($properties)
     @foreach($properties as $property)

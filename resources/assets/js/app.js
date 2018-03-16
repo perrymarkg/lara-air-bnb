@@ -30,10 +30,9 @@ guest_picker = require('./guest-picker');
     $(document).ready(function (){
         
         deleteModal();
-        booking_calculator.setRoomData(3)
-        
-        date_picker(booking_calculator.setBookingData);
+        date_picker();
         guest_picker();
+        booking_calculator();
       
     });
 

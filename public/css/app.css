@@ -10022,6 +10022,10 @@ a.text-dark:focus {
   height: 0;
   width: 0;
   left: 22px;
+  border-width: 5px;
+  margin: 0 -5px;
+  border-bottom-color: #ffffff;
+  top: -10px;
 }
 
 .guest-picker .adult-input,

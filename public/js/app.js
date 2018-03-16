@@ -29998,8 +29998,8 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(136);
-__webpack_require__(171);
-module.exports = __webpack_require__(172);
+__webpack_require__(172);
+module.exports = __webpack_require__(173);
 
 
 /***/ }),
@@ -30032,16 +30032,15 @@ var app = new Vue({
 deleteModal = __webpack_require__(166);
 date_picker = __webpack_require__(167);
 booking_calculator = __webpack_require__(170);
-guest_picker = __webpack_require__(178);
+guest_picker = __webpack_require__(171);
 
 (function ($) {
     $(document).ready(function () {
 
         deleteModal();
-        booking_calculator.setRoomData(3);
-
-        date_picker(booking_calculator.setBookingData);
+        date_picker();
         guest_picker();
+        booking_calculator();
     });
 })(jQuery);
 
@@ -65910,49 +65909,40 @@ webpackContext.id = 169;
 
 /***/ }),
 /* 170 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-var bookingData = 0;
-var roomData = 0;
+var moment = __webpack_require__(0);
 
-var setBookingData = function setBookingData(data) {
-        bookingData = data;
-        $('.results').html('Called');
-        calculate();
-};
+module.exports = function () {
+    var checkIn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '#check_in';
+    var checkOut = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '#check_out';
+    var guests = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '#guests';
+    var picker = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '.guest-picker';
 
-var setRoomData = function setRoomData(data) {
-        roomData = data;
-};
 
-var calculate = function calculate() {
-        console.log(bookingData + roomData);
-};
+    $check_in = $(checkIn);
+    $check_out = $(checkOut);
+    $guests = $(guests);
+    $picker = $(picker);
+    $booking_elements = $([checkIn, checkOut, guests].join(','));
 
-module.exports = {
-        setBookingData: setBookingData,
-        setRoomData: setRoomData
+    $booking_elements.on('change', function () {
+        axios.get('/').then(function (result) {
+            console.log(result);
+        });
+        compute_total_days($check_in.val(), $check_out.val());
+    });
+
+    var compute_total_days = function compute_total_days(check_in, check_out) {
+        if (check_in && check_out) {
+            no_days = moment(check_out).diff(moment(check_in), 'days');
+            console.log(no_days);
+        }
+    };
 };
 
 /***/ }),
 /* 171 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -65960,10 +65950,10 @@ module.exports = function () {
 
 
     $input = $(el);
-    $clone = $input.clone().removeAttr('id').addClass('guest-picker-input');
+    $clone = $input.clone().removeAttr('id').attr('readonly', true).addClass('guest-picker-input');
 
     $clone.appendTo($input.parent());
-    $input.hide();
+    $input.attr('type', 'hidden');
 
     $('body').append('<div class="guest-picker border rounded p-2">\
     <div class="row mb-3"> \
@@ -65996,7 +65986,7 @@ module.exports = function () {
 
     $clone.on('click', function () {
         $dropdown.css({
-            top: $(this).offset().top + $(this).outerHeight(),
+            top: $(this).offset().top + $(this).outerHeight() + 3,
             left: $(this).offset().left
         }).show();
     });
@@ -66005,6 +65995,7 @@ module.exports = function () {
         e.preventDefault();
         $adult_input.val(parseInt($adult_input.val()) + 1);
         $adult_minus.removeAttr('disabled');
+        compute_guests();
     });
 
     $adult_minus.on('click', function (e) {
@@ -66017,12 +66008,14 @@ module.exports = function () {
         } else {
             $(this).attr('disabled', true);
         }
+        compute_guests();
     });
 
     $child_add.on('click', function (e) {
         e.preventDefault();
         $child_input.val(parseInt($child_input.val()) + 1);
         $child_minus.removeAttr('disabled');
+        compute_guests();
     });
 
     $child_minus.on('click', function (e) {
@@ -66035,21 +66028,36 @@ module.exports = function () {
         } else {
             $(this).attr('disabled', true);
         }
+        compute_guests();
     });
 
-    /* $(el).clone().removeAttr('id').addClass('guest-picker-input').appendTo($(el).parent());
-    $(el).hide();
-    
-    $picker = $('.guest-picker');
-     $(el).on('click', function(){
-        $(this).val('Changed');
-        $picker.css({            
-            top: $(this).offset().top + $(this).outerHeight(), 
-            left: $(this).offset().left
-        })
-        .show();
-    }); */
+    // Hide dropdown
+    $(document).mouseup(function (e) {
+        $target = $(e.target);
+        if ($target.attr('class') != $dropdown.attr('class') && !$dropdown.has($target).length) {
+            $dropdown.hide();
+        }
+    });
+
+    var compute_guests = function compute_guests() {
+        total = parseInt($adult_input.val()) + parseInt($child_input.val());
+        $clone.val(total + ' Guests');
+        $input.val(total);
+        $input.change();
+    };
 };
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
