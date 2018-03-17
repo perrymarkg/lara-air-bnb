@@ -1,10 +1,14 @@
-@if( session('notice') )
+<?php
+    $content = isset( $content ) ? $content : session('notice'); 
+?>
+
+@if( $content  )
 
 <div class="alert alert-warning alert-dismissible fade show p-0" role="alert">
     <div class="container">
         <div class="row">
             <div class="col-md-12 p-3">
-                {{ session('notice') }}
+                {{ $content }}
             </div>
         </div>
     </div>

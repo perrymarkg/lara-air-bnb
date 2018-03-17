@@ -2,7 +2,7 @@
 
 @section('sidebar')
 
-    @component('components.property-sidebar', ['property_id' => $property->id])
+    @component('components.property-sidebar', ['property_id' => $property->id, 'price' => $property->price])
     @endcomponent
 
 @endsection

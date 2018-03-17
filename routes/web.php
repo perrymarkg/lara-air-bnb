@@ -21,7 +21,7 @@ Route::group(['namespace' => 'Frontend'], function(){
     Route::get('/property/{property}', 'PropertiesController@view')->name('property.view');
     
 
-    Route::post('/booking/request', 'BookingController@requestToBook')->name('booking.request');
+    Route::post('/booking/confirm', 'BookingController@confirmBooking')->name('booking.confirm');
     Route::post('/booking/compute', 'BookingController@getBookingPrices')->name('booking.compute');
 });
 

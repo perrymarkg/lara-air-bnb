@@ -1,10 +1,14 @@
 module.exports = function(el = '#guests'){
     
     $input = $(el);
-    $clone = $input.clone().removeAttr('id').attr('readonly', true).addClass('guest-picker-input');
+    $clone = $input.clone()
+    .removeAttr('id')
+    .removeAttr('name')
+    .attr('readonly', true)
+    .addClass('guest-picker-input');
 
     $clone.appendTo( $input.parent() );
-    $input.attr('type', 'hidden');
+    $input.val( JSON.stringify({'adult':1, 'child':0, 'total': 1}) ).attr('type', 'hidden');
 
     tmp_input_val = $input.val();
 
@@ -103,7 +107,8 @@ module.exports = function(el = '#guests'){
     const compute_guests = function(){
         total = parseInt($adult_input.val()) + parseInt($child_input.val());
         $clone.val(total + ' Guests');
-        $input.val(total);
+        values = {'adult': $adult_input.val(), 'child': $child_input.val(), 'total': total};
+        $input.val(JSON.stringify(values));
         
     }
 

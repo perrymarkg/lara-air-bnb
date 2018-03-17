@@ -30029,7 +30029,7 @@ var app = new Vue({
 });
 
 // Main
-window.prop_data = JSON.parse($('#prop_data').html());
+window.prop_data = JSON.parse($('#prop_data').html()); // clean up
 deleteModal = __webpack_require__(166);
 date_picker = __webpack_require__(167);
 booking_calculator = __webpack_require__(170);
@@ -65971,10 +65971,10 @@ module.exports = function () {
 
 
     $input = $(el);
-    $clone = $input.clone().removeAttr('id').attr('readonly', true).addClass('guest-picker-input');
+    $clone = $input.clone().removeAttr('id').removeAttr('name').attr('readonly', true).addClass('guest-picker-input');
 
     $clone.appendTo($input.parent());
-    $input.attr('type', 'hidden');
+    $input.val(JSON.stringify({ 'adult': 1, 'child': 0, 'total': 1 })).attr('type', 'hidden');
 
     tmp_input_val = $input.val();
 
@@ -66071,7 +66071,8 @@ module.exports = function () {
     var compute_guests = function compute_guests() {
         total = parseInt($adult_input.val()) + parseInt($child_input.val());
         $clone.val(total + ' Guests');
-        $input.val(total);
+        values = { 'adult': $adult_input.val(), 'child': $child_input.val(), 'total': total };
+        $input.val(JSON.stringify(values));
     };
 };
 
