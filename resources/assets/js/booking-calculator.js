@@ -5,7 +5,7 @@ module.exports = function(
     checkOut = '#check_out', 
     guests = '#guests', 
     picker = '.guest-picker',
-    result = '.booking-price-list' ){
+    result = '.booking-prices-result' ){
     
     $check_in = $(checkIn);
     $check_out = $(checkOut);
@@ -20,23 +20,22 @@ module.exports = function(
          total_nights = compute_total_nights($check_in.val(), $check_out.val());
 
         if( $check_in.val() != '' && $check_out.val() != '' ){
-            /* axios.get('/property_prices').then( function(result){
-                console.log(result);
-            }); */
             
-            total_price = (prop_data.price * total_nights).toFixed(2);
-            console.log(typeof prop_data.price, typeof total_nights);
-            $result.html(' \
-            <div class="list-group">\
-                <div class="list-group-item d-flex justify-content-between align-items-center">\
-                Length of stay <span>' + total_nights + ' Nights</span>\
-                </div>\
-                <div class="list-group-item d-flex justify-content-between align-items-center">\
-                Total Price: <span>'+ total_price +'</span>   \
-                </div>\
-            </div>\
-            ');
+            axios.post('/booking/compute', {
+                property_id: prop_data.id,
+                check_in: $check_in.val(),
+                check_out: $check_out.val()
+            })
+            .then( function(result){
+                display_booking_result(result);
+                $result.find('button').fadeIn();
+            });
+            
+            
+        } else {
+            $result.find('button').hide()
         }
+
         
     })
     
@@ -48,4 +47,8 @@ module.exports = function(
         return no_days;
     }
     
+    const display_booking_result = function(result){        
+        $result.find('.booking-prices-list').hide().html(result.data).fadeIn();
+        
+    }
 }

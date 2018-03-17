@@ -10000,8 +10000,12 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-.guest-picker-input {
+#booking_form .guest-picker-input {
   cursor: pointer;
+}
+
+#booking_form .booking-btn button.btn {
+  display: none;
 }
 
 .guest-picker {

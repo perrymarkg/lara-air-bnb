@@ -65912,8 +65912,6 @@ webpackContext.id = 169;
 /* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var moment = __webpack_require__(0);
 
 module.exports = function () {
@@ -65921,7 +65919,7 @@ module.exports = function () {
     var checkOut = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '#check_out';
     var guests = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '#guests';
     var picker = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '.guest-picker';
-    var result = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '.booking-price-list';
+    var result = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '.booking-prices-result';
 
 
     $check_in = $(checkIn);
@@ -65937,22 +65935,17 @@ module.exports = function () {
         total_nights = compute_total_nights($check_in.val(), $check_out.val());
 
         if ($check_in.val() != '' && $check_out.val() != '') {
-            /* axios.get('/property_prices').then( function(result){
-                console.log(result);
-            }); */
 
-            total_price = (prop_data.price * total_nights).toFixed(2);
-            console.log(_typeof(prop_data.price), typeof total_nights === 'undefined' ? 'undefined' : _typeof(total_nights));
-            $result.html(' \
-            <div class="list-group">\
-                <div class="list-group-item d-flex justify-content-between align-items-center">\
-                Length of stay <span>' + total_nights + ' Nights</span>\
-                </div>\
-                <div class="list-group-item d-flex justify-content-between align-items-center">\
-                Total Price: <span>' + total_price + '</span>   \
-                </div>\
-            </div>\
-            ');
+            axios.post('/booking/compute', {
+                property_id: prop_data.id,
+                check_in: $check_in.val(),
+                check_out: $check_out.val()
+            }).then(function (result) {
+                display_booking_result(result);
+                $result.find('button').fadeIn();
+            });
+        } else {
+            $result.find('button').hide();
         }
     });
 
@@ -65962,6 +65955,10 @@ module.exports = function () {
             no_days = moment(check_out).diff(moment(check_in), 'days');
         }
         return no_days;
+    };
+
+    var display_booking_result = function display_booking_result(result) {
+        $result.find('.booking-prices-list').hide().html(result.data).fadeIn();
     };
 };
 

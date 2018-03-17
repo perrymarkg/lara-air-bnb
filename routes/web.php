@@ -19,8 +19,10 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::group(['namespace' => 'Frontend'], function(){
     Route::get('/properties', 'PropertiesController@index')->name('properties.index');
     Route::get('/property/{property}', 'PropertiesController@view')->name('property.view');
+    
 
-    Route::get('/property_prices', 'PropertiesController@getPropertyPrices')->name('property.compute');
+    Route::post('/booking/request', 'BookingController@requestToBook')->name('booking.request');
+    Route::post('/booking/compute', 'BookingController@getBookingPrices')->name('booking.compute');
 });
 
 

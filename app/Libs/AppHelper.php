@@ -26,7 +26,7 @@ class AppHelper {
         $result = $old ? $old : $value;
 
         if( $format == 'price' && is_float($result) ) {
-            $result = number_format($result, 2, '.', ',');
+            $result = self::formatPrice($result);
         }
             
         return $result;
@@ -42,5 +42,10 @@ class AppHelper {
     public static function readJSON( $file )
     {
         return json_decode( file_get_contents( $file ), true );
+    }
+
+    public static function formatPrice($value)
+    {
+        return number_format($value, 2, '.', ',');
     }
 }
