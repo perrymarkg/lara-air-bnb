@@ -17,14 +17,12 @@
             @endif
             <div class="card">
                 
-                <form class="card-body">
+                <form action="{{ route('booking.process') }}" class="card-body" method="POST">
                     {{ csrf_field() }}
                     <h4> {{ $property->title }} </h4>
                     
                     {!! $results_html !!}
-                    <input type="hidden" name="property_id" value=" {{ $property->id }} ">
-                    <input type="hidden" name="check_in" value=" {{$request->check_in}} ">
-                    <input type="hidden" name="check_out" value=" {{$request->check_out}} ">
+                    <input type="hidden" name="data" value="{{ $json_data }}"/>
                     <button class="btn btn-primary btn-block mt-3">Confirm</button>
                 </form>
             </div>

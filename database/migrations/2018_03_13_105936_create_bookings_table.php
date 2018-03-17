@@ -17,10 +17,10 @@ class CreateBookingsTable extends Migration
             $table->increments('id');
             $table->integer('property_id');
             $table->integer('user_id');
-            $table->string('email');
             $table->integer('status');
-            $table->date('book_from');
-            $table->date('book_to');
+            $table->float('price');
+            $table->date('check_in');
+            $table->date('check_out');
             $table->text('details');
             $table->timestamps();
         });
