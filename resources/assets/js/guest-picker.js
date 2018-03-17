@@ -6,6 +6,8 @@ module.exports = function(el = '#guests'){
     $clone.appendTo( $input.parent() );
     $input.attr('type', 'hidden');
 
+    tmp_input_val = $input.val();
+
     $('body').append('<div class="guest-picker border rounded p-2">\
     <div class="row mb-3"> \
         <div class="col-md-6">Adults</div>\
@@ -40,6 +42,7 @@ module.exports = function(el = '#guests'){
             top: $(this).offset().top + $(this).outerHeight() + 3,
             left: $(this).offset().left
         }).show();
+        tmp_input_val = $input.val();
     });
 
     $adult_add.on('click', function (e){
@@ -85,8 +88,15 @@ module.exports = function(el = '#guests'){
     // Hide dropdown
     $(document).mouseup(function(e){
         $target = $(e.target);
-        if( $target.attr('class') != $dropdown.attr('class') && !$dropdown.has($target).length ){
+        if( $target.attr('class') != $dropdown.attr('class') && 
+        !$dropdown.has($target).length && $dropdown.is(':visible') ){
+            
             $dropdown.hide();
+            
+            if( $input.val() != tmp_input_val ){
+                $input.change();     
+            }
+            
         }
     });
 
@@ -94,7 +104,7 @@ module.exports = function(el = '#guests'){
         total = parseInt($adult_input.val()) + parseInt($child_input.val());
         $clone.val(total + ' Guests');
         $input.val(total);
-        $input.change();
+        
     }
 
 }

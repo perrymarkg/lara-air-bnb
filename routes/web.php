@@ -18,6 +18,9 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['namespace' => 'Frontend'], function(){
     Route::get('/properties', 'PropertiesController@index')->name('properties.index');
+    Route::get('/property/{property}', 'PropertiesController@view')->name('property.view');
+
+    Route::get('/property_prices', 'PropertiesController@getPropertyPrices')->name('property.compute');
 });
 
 

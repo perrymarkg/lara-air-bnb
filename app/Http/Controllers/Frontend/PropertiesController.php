@@ -17,5 +17,19 @@ class PropertiesController extends Controller
         return view('frontend.properties', $data );
     }
 
+    public function view(Property $property)
+    {
+
+        $data['property'] = $property;
+        $data['json'] = $property->toJson();
+        
+        return view('frontend.property-view', $data);
+    }
+    
+    public function getPropertyPrices()
+    {
+        return 'test';
+    }
+
     
 }

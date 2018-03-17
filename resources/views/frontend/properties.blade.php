@@ -8,7 +8,7 @@
             <div class="card mb-4">
                 <div class="card-header"> {{ $property->title }} </div>
                 <div class="card-body"> {{ $property->description }} </div>
-                <a href="" class="btn btn-primary"> View </a>
+                <a href=" {{ route('property.view', $property->id) }} " class="btn btn-primary"> View </a>
             </div>
         </div>
         

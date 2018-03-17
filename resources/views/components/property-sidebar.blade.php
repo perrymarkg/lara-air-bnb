@@ -12,9 +12,10 @@ property sidebar
             <input class="form-control bg-white" type="text"  placeholder="1 Guest" id="guests">
         </div>
     </div>
-    <div class="booking-prices row">
-        <div class="col-md-12">
-            
-        </div>
+    
+</div>
+<div class="booking-prices-result row">
+    <div class="booking-price-list col-md-12">
+        
     </div>
 </div>

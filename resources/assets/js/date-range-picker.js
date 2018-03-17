@@ -26,9 +26,8 @@ const date_range_picker = function( callback = null, checkIn = '#check_in', chec
     const _checkOut = flatpickr(checkOut, checkOutOpts);
 
     function checkInClose( selected, dateStr, instance) {        
-        _checkOut.set("minDate", new Date(moment(selected[0]).add('1', 'days'))  );
-
         if( selected.length ) {
+            _checkOut.set("minDate", new Date(moment(selected[0]).add('1', 'days'))  );
             $(checkOut).next().focus();
             _checkOut.open();        
         }
