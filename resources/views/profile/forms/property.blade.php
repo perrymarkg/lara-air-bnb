@@ -26,6 +26,12 @@
         </div>
     </div>
     <div class="form-row">
+        <input type="text" class="form-control" id="gmap_search" placeholder="Address"/>
+        <input type="text" class="form-control" name="lat" id="map_lat"/>
+        <input type="text" class="form-control" name="lng" id="map_lng"/>
+        <div id="gmap" style="width:100%;height:300px;"></div>
+    </div>
+    <div class="form-row">
         <div class="form-group col-md-4">
             <label for="country">Country</label> {{ old('country_id')}}
             <select name="country_id" id="country" class="form-control">

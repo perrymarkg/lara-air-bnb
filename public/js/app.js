@@ -30029,11 +30029,12 @@ var app = new Vue({
 });
 
 // Main
-window.prop_data = JSON.parse($('#prop_data').html()); // clean up
+if ($('#prop_data').is(':visible')) window.prop_data = JSON.parse($('#prop_data').html()); // clean up
 deleteModal = __webpack_require__(166);
 date_picker = __webpack_require__(167);
 booking_calculator = __webpack_require__(170);
 guest_picker = __webpack_require__(171);
+google_maps = __webpack_require__(179);
 
 (function ($) {
     $(document).ready(function () {
@@ -30043,6 +30044,7 @@ guest_picker = __webpack_require__(171);
         date_picker();
         guest_picker();
         booking_calculator();
+        google_maps.initMap();
     });
 })(jQuery);
 
@@ -66087,6 +66089,61 @@ module.exports = function () {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */
+/***/ (function(module, exports) {
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+module.exports = function () {
+    var $map;
+
+    var $marker;
+
+    var $search_box;
+
+    var $this = this;
+
+    function initMap() {
+        $map = $('#gmap');
+        $search = $('#gmap_search');
+
+        this.$search_box = new google.maps.places.SearchBox(document.getElementById('gmap_search'));
+        this.$map = new google.maps.Map($map.get(0), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 10
+        });
+        this.$marker = new google.maps.Marker({
+            position: { lat: -34.397, lng: 150.644 },
+            map: this.$map,
+            draggable: true,
+            title: "Drag me!"
+        });
+
+        this.$marker.addListener('dragend', dragend);
+
+        this.$search_box.addListener('places_changed', setMapCenter);
+    }
+
+    function dragend(event) {
+        $('#map_lat').val(event.latLng.lat());
+        $('#map_lng').val(event.latLng.lng());
+    }
+
+    function setMapCenter(event) {
+        console.log(typeof event === 'undefined' ? 'undefined' : _typeof(event));
+    }
+
+    return {
+        initMap: initMap
+    };
+}();
 
 /***/ })
 /******/ ]);

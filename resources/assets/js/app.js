@@ -21,11 +21,13 @@ const app = new Vue({
 });
 
 // Main
-window.prop_data = JSON.parse($('#prop_data').html()); // clean up
+if($('#prop_data').is(':visible') )
+    window.prop_data = JSON.parse($('#prop_data').html()); // clean up
 deleteModal = require('./modal');
 date_picker = require('./date-range-picker');
 booking_calculator = require('./booking-calculator');
 guest_picker = require('./guest-picker');
+google_maps = require('./google-maps');
 
 (function($){
     $(document).ready(function (){
@@ -35,7 +37,7 @@ guest_picker = require('./guest-picker');
         date_picker();
         guest_picker();
         booking_calculator();
-      
+        google_maps.initMap()
     });
 
 })(jQuery);

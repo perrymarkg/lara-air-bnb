@@ -36,7 +36,7 @@ class GoogleMaps {
             $loc['lng'] = $this->data->results[0]->geometry->location->lng;
             return $loc;
         }
-        return $loc;
+        return false;
     }
 
     public function getData()
@@ -52,10 +52,26 @@ class GoogleMaps {
         && isset( $this->data->results[0] ) ? true : false; 
     }
 
-    public static function generateRandomPoints($lat, $lng)
+    public static function generateRandomPoints($lat, $lng, $km = 5)
     {
-        $radius = 500 / 111000;
-        return 'test';
+        // Convert all latitudes and longitudes to radians.
+        $latR = deg2rad($lat);
+        $lngR = deg2rad($lng);
+
+        // rand1 and rand2 are unique random numbers generated in the range 0 to 1.0.
+        $rand1 = lcg_value();
+        $rand2 = lcg_value();
+        
+        $maxdist= $km / 6372.796924;
+
+        $dist = acos($rand1*(cos($maxdist) - 1) + 1);
+
+        $brg = 2*(3.14)*$rand2;
+
+        $lat = asin(sin($latR)*cos($dist) + cos($latR)*sin($dist)*cos($brg));
+        $lon = $lngR + atan2(sin($brg)*sin($dist)*cos($latR), cos($dist)-sin($latR)*sin($latR));
+
+        return compact('latR', 'lngR', 'rand1', 'rand2', 'maxdist', 'dist', 'lat', 'lon');
     }
 
 }
