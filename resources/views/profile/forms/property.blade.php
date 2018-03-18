@@ -25,11 +25,30 @@
                 rows="2">{{ Helper::displayInputValue( old('address'), $property->address) }}</textarea>
         </div>
     </div>
-    <div class="form-row">
-        <input type="text" class="form-control" id="gmap_search" placeholder="Address"/>
-        <input type="text" class="form-control" name="lat" id="map_lat"/>
-        <input type="text" class="form-control" name="lng" id="map_lng"/>
-        <div id="gmap" style="width:100%;height:300px;"></div>
+    <div class="form-row mb-3">
+        <label for="">Map Location</label>
+        <small class="form-text text-muted mb-3 text-center">
+            Search for City, Town or Country then drag the red marker to position the location of this property. 
+            For a more precise control, zoom in the map and position the marker.
+        </small>
+        
+        <input 
+            type="hidden" 
+            name="lat" 
+            id="map_lat" 
+            value="{{ Helper::displayInputValue( old('lat'), $property->lat) }}"             
+            readonly/>
+        <input 
+            type="hidden" 
+            name="lng" 
+            id="map_lng" 
+            value="{{ Helper::displayInputValue( old('lng'), $property->lng) }}"
+            readonly/>
+        <div class="gmap-wrapper">
+            <input type="text" class="form-control form-control-sm" id="gmap_search" placeholder="Search City, Town or Country"/>
+            <div id="gmap" style="width:100%;height:300px;"></div>
+        </div>
+        
     </div>
     <div class="form-row">
         <div class="form-group col-md-4">

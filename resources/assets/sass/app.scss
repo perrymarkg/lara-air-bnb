@@ -55,4 +55,23 @@
 
 } // .guest-picker
 
+.gmap-wrapper {
+  width: 100%;
+  position: relative;
+
+  #gmap {
+    position: relative;
+    z-index: 10;
+  }
+  #gmap_search {
+    position: absolute;
+    top:0;
+    right:0;
+    left:0;
+    margin:10px auto;
+    z-index: 15;
+    max-width: 300px;
+  }
+}
+
 @keyframes fpFadeInDown{from{opacity:0;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}to{opacity:1;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@keyframes fpFadeInDown{from{opacity:0;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}to{opacity:1;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}

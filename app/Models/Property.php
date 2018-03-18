@@ -10,7 +10,7 @@ class Property extends Model
         'title', 'address', 'phone',
         'price', 'type', 'max_kids', 'max_adults',
         'bedrooms', 'beds', 'baths', 'description',
-        'rules', 'cancellation'
+        'rules', 'cancellation', 'lat', 'lng'
     ];
     //
     function user()

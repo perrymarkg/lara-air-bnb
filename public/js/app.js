@@ -29998,8 +29998,8 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(136);
-__webpack_require__(172);
-module.exports = __webpack_require__(173);
+__webpack_require__(173);
+module.exports = __webpack_require__(174);
 
 
 /***/ }),
@@ -30034,7 +30034,7 @@ deleteModal = __webpack_require__(166);
 date_picker = __webpack_require__(167);
 booking_calculator = __webpack_require__(170);
 guest_picker = __webpack_require__(171);
-google_maps = __webpack_require__(179);
+google_maps = __webpack_require__(172);
 
 (function ($) {
     $(document).ready(function () {
@@ -30044,7 +30044,7 @@ google_maps = __webpack_require__(179);
         date_picker();
         guest_picker();
         booking_calculator();
-        google_maps.initMap();
+        google_maps.init();
     });
 })(jQuery);
 
@@ -66082,7 +66082,73 @@ module.exports = function () {
 /* 172 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+module.exports = function () {
+    var map;
+    var marker;
+    var search_box;
+    var $lat = $('#map_lat');
+    var $lng = $('#map_lng');
+    var $map = $('#gmap');
+    var $search = $('#gmap_search');
+
+    function init() {
+        setMap();
+    }
+
+    function setMap() {
+        default_position = latLngHasValues() ? { lat: Number($lat.val()), lng: Number($lng.val()) } : { lat: -34.397, lng: 150.644 };
+
+        search_box = new google.maps.places.SearchBox($search.get(0));
+        map = new google.maps.Map($map.get(0), {
+            center: default_position,
+            zoom: 12
+        });
+        marker = new google.maps.Marker({
+            position: default_position,
+            draggable: true,
+            title: "Drag me!"
+        });
+
+        latLngHasValues() ? marker.setMap(map) : '';
+
+        marker.addListener('dragend', dragend);
+
+        search_box.addListener('places_changed', setMapCenter);
+    }
+
+    function dragend(event) {
+        setInputLatLng(event.latLng.lat(), event.latLng.lng());
+    }
+
+    function setMapCenter(event) {
+        places = search_box.getPlaces();
+        if (places.length == 0) {
+            return;
+        }
+        loc = places[0].geometry.location;
+
+        if (!marker.getMap()) {
+            marker.setMap(map);
+        }
+
+        marker.setPosition(loc);
+        map.setCenter(loc);
+        setInputLatLng(loc.lat(), loc.lng());
+    }
+
+    function setInputLatLng(lat, lng) {
+        $lat.val(lat);
+        $lng.val(lng);
+    }
+
+    function latLngHasValues() {
+        return $lat.val() != '' && $lng.val() != '' ? true : false;
+    }
+
+    return {
+        init: init
+    };
+}();
 
 /***/ }),
 /* 173 */
@@ -66091,59 +66157,10 @@ module.exports = function () {
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */
+/* 174 */
 /***/ (function(module, exports) {
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-module.exports = function () {
-    var $map;
-
-    var $marker;
-
-    var $search_box;
-
-    var $this = this;
-
-    function initMap() {
-        $map = $('#gmap');
-        $search = $('#gmap_search');
-
-        this.$search_box = new google.maps.places.SearchBox(document.getElementById('gmap_search'));
-        this.$map = new google.maps.Map($map.get(0), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 10
-        });
-        this.$marker = new google.maps.Marker({
-            position: { lat: -34.397, lng: 150.644 },
-            map: this.$map,
-            draggable: true,
-            title: "Drag me!"
-        });
-
-        this.$marker.addListener('dragend', dragend);
-
-        this.$search_box.addListener('places_changed', setMapCenter);
-    }
-
-    function dragend(event) {
-        $('#map_lat').val(event.latLng.lat());
-        $('#map_lng').val(event.latLng.lng());
-    }
-
-    function setMapCenter(event) {
-        console.log(typeof event === 'undefined' ? 'undefined' : _typeof(event));
-    }
-
-    return {
-        initMap: initMap
-    };
-}();
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

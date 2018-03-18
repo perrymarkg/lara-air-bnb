@@ -10038,6 +10038,26 @@ a.text-dark:focus {
   width: 100%;
 }
 
+.gmap-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.gmap-wrapper #gmap {
+  position: relative;
+  z-index: 10;
+}
+
+.gmap-wrapper #gmap_search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin: 10px auto;
+  z-index: 15;
+  max-width: 300px;
+}
+
 @-webkit-keyframes fpFadeInDown {
   from {
     opacity: 0;

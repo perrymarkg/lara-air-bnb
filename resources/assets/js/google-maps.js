@@ -1,50 +1,73 @@
 module.exports = function() {
-    var $map;
+    var map;
+    var marker;
+    var search_box;
+    var $lat = $('#map_lat');
+    var $lng = $('#map_lng');
+    var $map = $('#gmap');
+    var $search = $('#gmap_search');
 
-    var $marker;
-
-    var $search_box;
-
-    var $this = this;
-
-    function initMap()
+    function init()
     {
-        $map = $('#gmap');
-        $search = $('#gmap_search');
+        setMap();
+    }
+
+    function setMap()
+    {
+        default_position = latLngHasValues() ? {lat: Number($lat.val()), lng: Number($lng.val()) } : {lat: -34.397, lng: 150.644};
         
-        this.$search_box = new google.maps.places.SearchBox( document.getElementById('gmap_search') );
-        this.$map = new google.maps.Map( $map.get(0), {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 10
-          });
-        this.$marker = new google.maps.Marker({
-            position: {lat: -34.397, lng: 150.644},
-            map: this.$map,
+        search_box = new google.maps.places.SearchBox( $search.get(0) );
+        map = new google.maps.Map( $map.get(0), {
+            center: default_position,
+            zoom: 12
+        });
+        marker = new google.maps.Marker({
+            position: default_position,            
             draggable:true,
             title:"Drag me!"
-          });
+        });
 
-        this.$marker.addListener('dragend', dragend);
+        latLngHasValues() ? marker.setMap(map) : '';
         
-        this.$search_box.addListener('places_changed', setMapCenter)
+        marker.addListener('dragend', dragend);
         
-        
-
+        search_box.addListener('places_changed', setMapCenter)
     }
 
     function dragend(event)
-    {
-        $('#map_lat').val(event.latLng.lat());
-        $('#map_lng').val(event.latLng.lng());
+    {    
+        setInputLatLng( event.latLng.lat(), event.latLng.lng() );
     }
 
     function setMapCenter(event)
     {
-        console.log(typeof event);
+        places = search_box.getPlaces();
+        if (places.length == 0) {
+            return;
+        }
+        loc = places[0].geometry.location
+
+        if( !marker.getMap() ){
+            marker.setMap(map);
+        }
+            
+        marker.setPosition(loc);
+        map.setCenter(loc);
+        setInputLatLng(loc.lat(), loc.lng());
+    }
+
+    function setInputLatLng(lat, lng)
+    {
+        $lat.val(lat)
+        $lng.val(lng)
+    }
+
+    function latLngHasValues(){
+        return ( $lat.val() != '' && $lng.val() != '') ? true : false;
     }
 
     return {
-        initMap: initMap
+        init: init
     }
 
 }()

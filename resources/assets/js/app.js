@@ -37,7 +37,7 @@ google_maps = require('./google-maps');
         date_picker();
         guest_picker();
         booking_calculator();
-        google_maps.initMap()
+        google_maps.init()
     });
 
 })(jQuery);

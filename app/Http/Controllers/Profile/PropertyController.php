@@ -106,7 +106,7 @@ class PropertyController extends Controller
             'title', 'address','phone', 'country_id',
             'price', 'type', 'max_kids', 'max_adults',
             'bedrooms', 'beds', 'baths', 'description',
-            'rules', 'cancellation'
+            'rules', 'cancellation', 'lat', 'lng'
         ];
 
         $result = $request->only($fields);
@@ -123,11 +123,13 @@ class PropertyController extends Controller
             'country_id' => 'required',
             'type' => 'required',
             'price' => 'regex:/^\d*(\.\d{1,2})?$/|required|min:0',
-            'address' => 'required'
+            'address' => 'required',
+            'lat' => 'required'
         ];
 
         $messages = [
-            'country_id.required' => 'Country field is required'
+            'country_id.required' => 'Country field is required',
+            'lat.required' => 'Google map position is required'
         ];
 
         $validator = Validator::make( $input , $rules, $messages);
