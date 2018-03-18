@@ -2,9 +2,12 @@
 const flatpickr = require("flatpickr").default
 const moment = require('moment');
 
-const date_range_picker = function( callback = null, checkIn = '#check_in', checkOut = '#check_out' ){
+module.exports = function(){
     
     var tmp = '';
+
+    var checkIn = '#check_in';
+    var checkOut = '#check_out';
     
     const checkInOpts = {
         altInput: true,
@@ -18,28 +21,29 @@ const date_range_picker = function( callback = null, checkIn = '#check_in', chec
         altInput: true,
         altFormat: "M j, Y",
         dateFormat: "Y-m-d",
-        minDate:"today",
-        onClose: checkOutClose
+        minDate:"today"
     }
 
-    const _checkIn = flatpickr(checkIn, checkInOpts);
-    const _checkOut = flatpickr(checkOut, checkOutOpts);
+    var checkInPickr;
+    var checkOutPickr;
+
+    function init() {
+        checkInPickr = flatpickr(checkIn, checkInOpts);
+        checkOutPickr = flatpickr(checkOut, checkOutOpts);
+    }
 
     function checkInClose( selected, dateStr, instance) {        
         if( selected.length ) {
-            _checkOut.set("minDate", new Date(moment(selected[0]).add('1', 'days'))  );
+            checkOutPickr.set("minDate", new Date(moment(selected[0]).add('1', 'days'))  );
             $(checkOut).next().focus();
-            _checkOut.open();        
+            checkOutPickr.open();        
         }
     }
-
-    function checkOutClose( selected, dateStr, instace) {
-        
-        if( callback )
-            callback(2);
+    
+    return {
+        init:init
     }
+    
+}()
 
 
-}
-
-module.exports = date_range_picker

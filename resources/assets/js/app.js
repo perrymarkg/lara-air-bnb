@@ -14,15 +14,18 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+/* Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
     el: '#app'
-});
+}); */
 
 // Main
-if($('#prop_data').is(':visible') )
+
+
+if($('#prop_data').length)
     window.prop_data = JSON.parse($('#prop_data').html()); // clean up
+
 deleteModal = require('./modal');
 date_picker = require('./date-range-picker');
 booking_calculator = require('./booking-calculator');
@@ -33,10 +36,10 @@ google_maps = require('./google-maps');
     $(document).ready(function (){
         
         $('#prop_data').html('');
-        deleteModal();
-        date_picker();
-        guest_picker();
-        booking_calculator();
+        deleteModal.init();
+        date_picker.init();
+        guest_picker.init();
+        booking_calculator.init();
         google_maps.init()
     });
 

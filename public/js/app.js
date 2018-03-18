@@ -1902,7 +1902,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(169)("./" + name);
+            __webpack_require__(166)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -29998,8 +29998,8 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(136);
-__webpack_require__(173);
-module.exports = __webpack_require__(174);
+__webpack_require__(170);
+module.exports = __webpack_require__(171);
 
 
 /***/ }),
@@ -30022,28 +30022,31 @@ window.Vue = __webpack_require__(159);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(162));
+/* Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
-var app = new Vue({
+const app = new Vue({
     el: '#app'
-});
+}); */
 
 // Main
-if ($('#prop_data').is(':visible')) window.prop_data = JSON.parse($('#prop_data').html()); // clean up
-deleteModal = __webpack_require__(166);
-date_picker = __webpack_require__(167);
-booking_calculator = __webpack_require__(170);
-guest_picker = __webpack_require__(171);
-google_maps = __webpack_require__(172);
+
+
+if ($('#prop_data').length) window.prop_data = JSON.parse($('#prop_data').html()); // clean up
+
+deleteModal = __webpack_require__(163);
+date_picker = __webpack_require__(164);
+booking_calculator = __webpack_require__(167);
+guest_picker = __webpack_require__(168);
+google_maps = __webpack_require__(169);
 
 (function ($) {
     $(document).ready(function () {
 
         $('#prop_data').html('');
-        deleteModal();
-        date_picker();
-        guest_picker();
-        booking_calculator();
+        deleteModal.init();
+        date_picker.init();
+        guest_picker.init();
+        booking_calculator.init();
         google_maps.init();
     });
 })(jQuery);
@@ -63222,252 +63225,27 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(8)))
 
 /***/ }),
-/* 162 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(163)
-/* script */
-var __vue_script__ = __webpack_require__(164)
-/* template */
-var __vue_template__ = __webpack_require__(165)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\ExampleComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0ca92eac", Component.options)
-  } else {
-    hotAPI.reload("data-v-0ca92eac", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 162 */,
 /* 163 */
 /***/ (function(module, exports) {
 
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 164 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
-});
-
-/***/ }),
-/* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0ca92eac", module.exports)
-  }
-}
-
-/***/ }),
-/* 166 */
-/***/ (function(module, exports) {
-
-var deleteModal = function deleteModal() {
+module.exports = function () {
 
     var $modal = $('#promptDeleteModal');
     var $form = $modal.find('form');
     var $title = $modal.find('.modal-title');
     var $name = $modal.find('.modal-body span');
 
-    $('a.prompt-delete').on('click', function (e) {
-        e.preventDefault();
-        showModal(this);
-    });
+    function init() {
+        $('a.prompt-delete').on('click', function (e) {
+            e.preventDefault();
+            showModal(this);
+        });
 
-    $modal.find('.proceed').on('click', function () {
-        $form.submit();
-    });
+        $modal.find('.proceed').on('click', function () {
+            $form.submit();
+        });
+    }
 
     function showModal(el) {
         $modal.modal('show');
@@ -63475,25 +63253,26 @@ var deleteModal = function deleteModal() {
         $title.html('Delete ' + $(el).data('type'));
         $name.html('"' + $(el).data('name') + '"');
     }
-};
 
-module.exports = deleteModal;
+    return {
+        init: init
+    };
+}();
 
 /***/ }),
-/* 167 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var flatpickr = __webpack_require__(168).default;
+var flatpickr = __webpack_require__(165).default;
 var moment = __webpack_require__(0);
 
-var date_range_picker = function date_range_picker() {
-    var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var checkIn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '#check_in';
-    var checkOut = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '#check_out';
-
+module.exports = function () {
 
     var tmp = '';
+
+    var checkIn = '#check_in';
+    var checkOut = '#check_out';
 
     var checkInOpts = {
         altInput: true,
@@ -63507,31 +63286,32 @@ var date_range_picker = function date_range_picker() {
         altInput: true,
         altFormat: "M j, Y",
         dateFormat: "Y-m-d",
-        minDate: "today",
-        onClose: checkOutClose
+        minDate: "today"
     };
 
-    var _checkIn = flatpickr(checkIn, checkInOpts);
-    var _checkOut = flatpickr(checkOut, checkOutOpts);
+    var checkInPickr;
+    var checkOutPickr;
+
+    function init() {
+        checkInPickr = flatpickr(checkIn, checkInOpts);
+        checkOutPickr = flatpickr(checkOut, checkOutOpts);
+    }
 
     function checkInClose(selected, dateStr, instance) {
         if (selected.length) {
-            _checkOut.set("minDate", new Date(moment(selected[0]).add('1', 'days')));
+            checkOutPickr.set("minDate", new Date(moment(selected[0]).add('1', 'days')));
             $(checkOut).next().focus();
-            _checkOut.open();
+            checkOutPickr.open();
         }
     }
 
-    function checkOutClose(selected, dateStr, instace) {
-
-        if (callback) callback(2);
-    }
-};
-
-module.exports = date_range_picker;
+    return {
+        init: init
+    };
+}();
 
 /***/ }),
-/* 168 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* flatpickr v4.3.2, @license MIT */
@@ -65645,7 +65425,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 /***/ }),
-/* 169 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -65908,10 +65688,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 169;
+webpackContext.id = 166;
 
 /***/ }),
-/* 170 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var moment = __webpack_require__(0);
@@ -65924,196 +65704,216 @@ module.exports = function () {
     var result = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '.booking-prices-result';
 
 
-    $check_in = $(checkIn);
-    $check_out = $(checkOut);
-    $guests = $(guests);
-    $picker = $(picker);
-    $booking_elements = $([checkIn, checkOut, guests].join(','));
+    var $checkIn = $(checkIn);
+    var $checkOut = $(checkOut);
+    var $guests = $(guests);
+    var $picker = $(picker);
+    var $bookingElements = $([checkIn, checkOut, guests].join(','));
 
     $result = $(result);
 
-    $booking_elements.on('change', function () {
+    function init() {
 
-        total_nights = compute_total_nights($check_in.val(), $check_out.val());
+        $bookingElements.on('change', function () {
 
-        if ($check_in.val() != '' && $check_out.val() != '') {
+            if ($checkIn.val() != '' && $checkOut.val() != '') {
+                sendPostData();
+            } else {
+                $result.find('button').hide();
+            }
+        });
+    }
 
-            axios.post('/booking/compute', {
-                property_id: prop_data.id,
-                check_in: $check_in.val(),
-                check_out: $check_out.val()
-            }).then(function (result) {
-                display_booking_result(result);
-                $result.find('button').fadeIn();
-            });
-        } else {
-            $result.find('button').hide();
-        }
-    });
+    function sendPostData() {
+        axios.post('/booking/compute', {
+            property_id: prop_data.id,
+            check_in: $checkIn.val(),
+            check_out: $checkOut.val()
+        }).then(function (result) {
+            displayBookingResult(result);
+            $result.find('button').fadeIn();
+        });
+    }
 
-    var compute_total_nights = function compute_total_nights(check_in, check_out) {
-        no_days = 0;
-        if (check_in && check_out) {
-            no_days = moment(check_out).diff(moment(check_in), 'days');
-        }
-        return no_days;
-    };
-
-    var display_booking_result = function display_booking_result(result) {
+    function displayBookingResult(result) {
         $result.find('.booking-prices-list').hide().html(result.data).fadeIn();
+    }
+
+    return {
+        init: init
     };
-};
+}();
 
 /***/ }),
-/* 171 */
+/* 168 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
-    var el = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '#guests';
 
+    var $input = $('#guests');
+    var $clone = $input.clone().removeAttr('id').removeAttr('name').attr('readonly', true).addClass('guest-picker-input');
 
-    $input = $(el);
-    $clone = $input.clone().removeAttr('id').removeAttr('name').attr('readonly', true).addClass('guest-picker-input');
+    var tmpInputVal = $input.val();
 
-    $clone.appendTo($input.parent());
-    $input.val(JSON.stringify({ 'adult': 1, 'child': 0, 'total': 1 })).attr('type', 'hidden');
+    var $dropdown, $adultAdd, $adultMinus, $adultInput, $childAdd, $childMinus, $childInput;
 
-    tmp_input_val = $input.val();
+    function init() {
 
-    $('body').append('<div class="guest-picker border rounded p-2">\
-    <div class="row mb-3"> \
-        <div class="col-md-6">Adults</div>\
-        <div class="col-md-2 text-center"><button class="adult-minus btn btn-sm btn-primary" disabled>-</button></div> \
-        <div class="col-md-2 text-center p-0"> \
-            <input type="number" value="1" min="1" class="adult-input border-0 p-0 text-center" readonly/> \
-        </div> \
-        <div class="col-md-2 text-center"><button class="adult-add btn btn-sm btn-primary">+</button></div> \
-    </div> \
-    <div class="row"> \
-        <div class="col-md-6">Children</div>\
-        <div class="col-md-2 text-center"><button class="child-minus btn btn-sm btn-primary" disabled>-</button></div> \
-        <div class="col-md-2 text-center p-0"> \
-            <input type="number" value="0" min="0" class="child-input border-0 p-0 text-center" readonly/> \
-        </div> \
-        <div class="col-md-2 text-center"><button class="child-add btn btn-sm btn-primary">+</button></div> \
-    </div> \
-    </div>');
+        $clone.appendTo($input.parent());
+        $input.val(JSON.stringify({ 'adult': 1, 'child': 0, 'total': 1 })).attr('type', 'hidden');
 
-    $dropdown = $('.guest-picker');
+        hideDropDown();
+        setupGuestPickerTemplate();
 
-    $adult_add = $('.adult-add');
-    $adult_minus = $('.adult-minus');
-    $adult_input = $('.adult-input');
+        $clone.on('click', function () {
+            $dropdown.css({
+                top: $(this).offset().top + $(this).outerHeight() + 3,
+                left: $(this).offset().left
+            }).show();
+        });
 
-    $child_add = $('.child-add');
-    $child_minus = $('.child-minus');
-    $child_input = $('.child-input');
+        $adultAdd.on('click', function (e) {
+            e.preventDefault();
+            $adultInput.val(parseInt($adultInput.val()) + 1);
+            $adultMinus.removeAttr('disabled');
+            computeGuests();
+        });
 
-    $clone.on('click', function () {
-        $dropdown.css({
-            top: $(this).offset().top + $(this).outerHeight() + 3,
-            left: $(this).offset().left
-        }).show();
-        tmp_input_val = $input.val();
-    });
+        $adultMinus.on('click', function (e) {
+            e.preventDefault();
+            val = parseInt($adultInput.val()) - 1;
+            min = $adultInput.attr('min');
 
-    $adult_add.on('click', function (e) {
-        e.preventDefault();
-        $adult_input.val(parseInt($adult_input.val()) + 1);
-        $adult_minus.removeAttr('disabled');
-        compute_guests();
-    });
-
-    $adult_minus.on('click', function (e) {
-        e.preventDefault();
-        val = parseInt($adult_input.val()) - 1;
-        min = $adult_input.attr('min');
-
-        if (val >= min) {
-            $adult_input.val(parseInt($adult_input.val()) - 1);
-        } else {
-            $(this).attr('disabled', true);
-        }
-        compute_guests();
-    });
-
-    $child_add.on('click', function (e) {
-        e.preventDefault();
-        $child_input.val(parseInt($child_input.val()) + 1);
-        $child_minus.removeAttr('disabled');
-        compute_guests();
-    });
-
-    $child_minus.on('click', function (e) {
-        e.preventDefault();
-        val = parseInt($child_input.val()) - 1;
-        min = $child_input.attr('min');
-
-        if (val >= min) {
-            $child_input.val(parseInt($child_input.val()) - 1);
-        } else {
-            $(this).attr('disabled', true);
-        }
-        compute_guests();
-    });
-
-    // Hide dropdown
-    $(document).mouseup(function (e) {
-        $target = $(e.target);
-        if ($target.attr('class') != $dropdown.attr('class') && !$dropdown.has($target).length && $dropdown.is(':visible')) {
-
-            $dropdown.hide();
-
-            if ($input.val() != tmp_input_val) {
-                $input.change();
+            if (val >= min) {
+                $adultInput.val(parseInt($adultInput.val()) - 1);
+            } else {
+                $(this).attr('disabled', true);
             }
-        }
-    });
+            computeGuests();
+        });
 
-    var compute_guests = function compute_guests() {
-        total = parseInt($adult_input.val()) + parseInt($child_input.val());
+        $childAdd.on('click', function (e) {
+            e.preventDefault();
+            $childInput.val(parseInt($childInput.val()) + 1);
+            $childMinus.removeAttr('disabled');
+            computeGuests();
+        });
+
+        $childMinus.on('click', function (e) {
+            e.preventDefault();
+            val = parseInt($childInput.val()) - 1;
+            min = $childInput.attr('min');
+
+            if (val >= min) {
+                $childInput.val(parseInt($childInput.val()) - 1);
+            } else {
+                $(this).attr('disabled', true);
+            }
+            computeGuests();
+        });
+    }
+
+    function setupGuestPickerTemplate() {
+        $('body').append('<div class="guest-picker border rounded p-2">\
+                <div class="row mb-3"> \
+                    <div class="col-md-6">Adults</div>\
+                    <div class="col-md-2 text-center"><button class="adult-minus btn btn-sm btn-primary" disabled>-</button></div> \
+                    <div class="col-md-2 text-center p-0"> \
+                        <input type="number" value="1" min="1" class="adult-input border-0 p-0 text-center" readonly/> \
+                    </div> \
+                    <div class="col-md-2 text-center"><button class="adult-add btn btn-sm btn-primary">+</button></div> \
+                </div> \
+                <div class="row"> \
+                    <div class="col-md-6">Children</div>\
+                    <div class="col-md-2 text-center"><button class="child-minus btn btn-sm btn-primary" disabled>-</button></div> \
+                    <div class="col-md-2 text-center p-0"> \
+                        <input type="number" value="0" min="0" class="child-input border-0 p-0 text-center" readonly/> \
+                    </div> \
+                    <div class="col-md-2 text-center"><button class="child-add btn btn-sm btn-primary">+</button></div> \
+                </div> \
+                </div>');
+        $dropdown = $('.guest-picker');
+        $adultAdd = $('.adult-add');
+        $adultMinus = $('.adult-minus');
+        $adultInput = $('.adult-input');
+
+        $childAdd = $('.child-add');
+        $childMinus = $('.child-minus');
+        $childInput = $('.child-input');
+    }
+
+    function hideDropDown() {
+        $(document).mouseup(function (e) {
+            $target = $(e.target);
+            if ($target.attr('class') != $dropdown.attr('class') && !$dropdown.has($target).length && $dropdown.is(':visible')) {
+
+                $dropdown.hide();
+
+                if ($input.val() != tmpInputVal) {
+                    $input.change();
+                }
+            }
+        });
+    }
+
+    function computeGuests() {
+        total = parseInt($adultInput.val()) + parseInt($childInput.val());
         $clone.val(total + ' Guests');
-        values = { 'adult': $adult_input.val(), 'child': $child_input.val(), 'total': total };
+        values = { 'adult': $adultInput.val(), 'child': $childInput.val(), 'total': total };
         $input.val(JSON.stringify(values));
+    }
+
+    return {
+        init: init
     };
-};
+}();
 
 /***/ }),
-/* 172 */
+/* 169 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
     var map;
     var marker;
-    var search_box;
+    var searchBox;
     var $lat = $('#map_lat');
     var $lng = $('#map_lng');
     var $map = $('#gmap');
     var $search = $('#gmap_search');
 
     function init() {
-        setMap();
+        if ($map.is(':visible')) {
+            setMap();
+            setSearchBox();
+            setMarker();
+        }
     }
 
     function setMap() {
-        default_position = latLngHasValues() ? { lat: Number($lat.val()), lng: Number($lng.val()) } : { lat: -34.397, lng: 150.644 };
 
-        search_box = new google.maps.places.SearchBox($search.get(0));
+        defaultPosition = latLngHasValues() ? { lat: Number($lat.val()), lng: Number($lng.val()) } : { lat: -34.397, lng: 150.644 };
+
         map = new google.maps.Map($map.get(0), {
-            center: default_position,
+            center: defaultPosition,
             zoom: 12
         });
+    }
+
+    function setMarker() {
+
         marker = new google.maps.Marker({
-            position: default_position,
+            position: defaultPosition,
             draggable: true,
             title: "Drag me!"
         });
 
-        latLngHasValues() ? marker.setMap(map) : '';
-
         marker.addListener('dragend', dragend);
+        latLngHasValues() ? marker.setMap(map) : '';
+    }
 
-        search_box.addListener('places_changed', setMapCenter);
+    function setSearchBox() {
+        searchBox = new google.maps.places.SearchBox($search.get(0));
+        searchBox.addListener('places_changed', setMapCenter);
     }
 
     function dragend(event) {
@@ -66121,7 +65921,8 @@ module.exports = function () {
     }
 
     function setMapCenter(event) {
-        places = search_box.getPlaces();
+
+        places = searchBox.getPlaces();
         if (places.length == 0) {
             return;
         }
@@ -66151,13 +65952,13 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 173 */
+/* 170 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 174 */
+/* 171 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,47 +1,56 @@
 module.exports = function() {
     var map;
     var marker;
-    var search_box;
+    var searchBox;
     var $lat = $('#map_lat');
     var $lng = $('#map_lng');
     var $map = $('#gmap');
     var $search = $('#gmap_search');
 
-    function init()
-    {
-        setMap();
+    function init() {
+        if( $map.is(':visible') ){
+            setMap();
+            setSearchBox();
+            setMarker();
+        }
     }
 
-    function setMap()
-    {
-        default_position = latLngHasValues() ? {lat: Number($lat.val()), lng: Number($lng.val()) } : {lat: -34.397, lng: 150.644};
-        
-        search_box = new google.maps.places.SearchBox( $search.get(0) );
+    function setMap() {
+
+        defaultPosition = latLngHasValues() ? {lat: Number($lat.val()), lng: Number($lng.val()) } : {lat: -34.397, lng: 150.644};
+
         map = new google.maps.Map( $map.get(0), {
-            center: default_position,
+            center: defaultPosition,
             zoom: 12
-        });
+        });               
+        
+    }
+
+    function setMarker() {
+
         marker = new google.maps.Marker({
-            position: default_position,            
+            position: defaultPosition,            
             draggable:true,
             title:"Drag me!"
         });
 
-        latLngHasValues() ? marker.setMap(map) : '';
-        
         marker.addListener('dragend', dragend);
-        
-        search_box.addListener('places_changed', setMapCenter)
+        latLngHasValues() ? marker.setMap(map) : '';
+
     }
 
-    function dragend(event)
-    {    
+    function setSearchBox() {
+        searchBox = new google.maps.places.SearchBox( $search.get(0) );
+        searchBox.addListener('places_changed', setMapCenter);
+    }
+
+    function dragend(event) {
         setInputLatLng( event.latLng.lat(), event.latLng.lng() );
     }
 
-    function setMapCenter(event)
-    {
-        places = search_box.getPlaces();
+    function setMapCenter(event) {
+
+        places = searchBox.getPlaces();
         if (places.length == 0) {
             return;
         }
@@ -54,15 +63,15 @@ module.exports = function() {
         marker.setPosition(loc);
         map.setCenter(loc);
         setInputLatLng(loc.lat(), loc.lng());
+
     }
 
-    function setInputLatLng(lat, lng)
-    {
+    function setInputLatLng(lat, lng) {
         $lat.val(lat)
         $lng.val(lng)
     }
 
-    function latLngHasValues(){
+    function latLngHasValues() {
         return ( $lat.val() != '' && $lng.val() != '') ? true : false;
     }
 
