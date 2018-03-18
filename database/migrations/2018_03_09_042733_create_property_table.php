@@ -21,10 +21,12 @@ class CreatePropertyTable extends Migration
             $table->integer('type')->default(1);
             $table->string('title');
             $table->string('address');
+            $table->float('lat', 10, 6)->nullable();
+            $table->float('lng', 10, 6)->nullable();
             $table->float('price');
             $table->string('phone')->nullable();
-            $table->integer('max_adults');
-            $table->integer('max_kids');
+            $table->integer('max_adults')->nullable();
+            $table->integer('max_kids')->default(0);
             $table->integer('bedrooms');
             $table->integer('beds');
             $table->integer('baths');

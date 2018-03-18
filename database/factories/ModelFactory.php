@@ -49,13 +49,3 @@ $factory->define(App\Models\Property::class, function (Faker\Generator $faker) {
     ];
 
 });
-
-// Images
-$factory->define(App\Models\ListingImage::class, function(Faker\Generator $faker) {
-
-    return [
-        'image' => $faker->image('600', '480', 'city') + rand(1,10),
-        'description' => $faker->paragraph(2)
-    ];
-
-});
