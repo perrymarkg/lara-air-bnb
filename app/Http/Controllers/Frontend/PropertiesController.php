@@ -12,9 +12,21 @@ class PropertiesController extends Controller
 
     public function index()
     {
-        $data['properties'] = Property::all();
-        
-        return view('frontend.properties', $data );
+        $properties = Property::all();
+
+        $markers = [];
+
+        foreach($properties as $prop) {
+            $markers[] = [
+                'id' => $prop->id,
+                'lat' => $prop->lat,
+                'lng' => $prop->lng,
+                'price' => \Helper::formatPrice($prop->price),
+                'title' => $prop->title
+            ];
+        }
+        $markers = json_encode($markers);
+        return view('frontend.properties', compact('properties', 'markers') );
     }
 
     public function view(Property $property)

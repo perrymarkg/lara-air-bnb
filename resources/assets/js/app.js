@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+//window.Vue = require('vue');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,7 +30,9 @@ deleteModal = require('./modal');
 date_picker = require('./date-range-picker');
 booking_calculator = require('./booking-calculator');
 guest_picker = require('./guest-picker');
-google_maps = require('./google-maps');
+gmapsEditProperty = require('./gmaps-edit-property');
+gmapsSearchProperty = require('./gmaps-search-property');
+markerBinder = require('./marker-binder');
 
 (function($){
     $(document).ready(function (){
@@ -40,8 +42,20 @@ google_maps = require('./google-maps');
         date_picker.init();
         guest_picker.init();
         booking_calculator.init();
-
+        
     });
 
 })(jQuery);
+
+initMaps = function(){
+    if( $('#gmap').is(':visible') ) {
+        gmapsEditProperty.init();
+    }
+
+    if( $('#gmap_properties').is(':visible') ){
+        gmapsSearchProperty.init();
+        gmapsSearchProperty.onInit( markerBinder.init );
+    }
+
+}
 

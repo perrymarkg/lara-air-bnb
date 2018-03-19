@@ -10000,6 +10000,10 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+main {
+  padding-top: 55px;
+}
+
 #booking_form .guest-picker-input {
   cursor: pointer;
 }
@@ -10043,9 +10047,21 @@ a.text-dark:focus {
   position: relative;
 }
 
+.gmap-wrapper.properties {
+  position: fixed;
+  top: 55px;
+  bottom: 0;
+  right: 0;
+}
+
+.gmap-wrapper #gmap_properties {
+  height: 100vh;
+}
+
 .gmap-wrapper #gmap {
   position: relative;
   z-index: 10;
+  height: 300px;
 }
 
 .gmap-wrapper #gmap_search {
@@ -10056,6 +10072,10 @@ a.text-dark:focus {
   margin: 10px auto;
   z-index: 15;
   max-width: 300px;
+}
+
+.gmap-sidebar {
+  position: relative;
 }
 
 @-webkit-keyframes fpFadeInDown {

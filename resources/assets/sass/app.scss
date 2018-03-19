@@ -12,6 +12,9 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+main {
+  padding-top:55px;
+}
 
 #booking_form {
   
@@ -59,9 +62,22 @@
   width: 100%;
   position: relative;
 
+  &.properties {
+    position: fixed;
+    top:55px;
+    bottom:0;
+    right: 0;
+    
+  }
+
+  #gmap_properties {    
+    height: 100vh;
+  }
+
   #gmap {
     position: relative;
     z-index: 10;
+    height: 300px;
   }
   #gmap_search {
     position: absolute;
@@ -72,6 +88,11 @@
     z-index: 15;
     max-width: 300px;
   }
+
+}
+
+.gmap-sidebar {
+  position: relative;
 }
 
 @keyframes fpFadeInDown{from{opacity:0;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}to{opacity:1;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@keyframes fpFadeInDown{from{opacity:0;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}to{opacity:1;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}
