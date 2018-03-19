@@ -1,4 +1,4 @@
-@extends('profile.base')
+@extends('profile._base')
 
 <?php
   $profile = [

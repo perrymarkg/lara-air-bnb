@@ -1902,7 +1902,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(166)("./" + name);
+            __webpack_require__(165)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -29998,8 +29998,8 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(136);
-__webpack_require__(170);
-module.exports = __webpack_require__(171);
+__webpack_require__(169);
+module.exports = __webpack_require__(170);
 
 
 /***/ }),
@@ -30033,11 +30033,11 @@ const app = new Vue({
 
 if ($('#prop_data').length) window.prop_data = JSON.parse($('#prop_data').html()); // clean up
 
-deleteModal = __webpack_require__(163);
-date_picker = __webpack_require__(164);
-booking_calculator = __webpack_require__(167);
-guest_picker = __webpack_require__(168);
-google_maps = __webpack_require__(169);
+deleteModal = __webpack_require__(162);
+date_picker = __webpack_require__(163);
+booking_calculator = __webpack_require__(166);
+guest_picker = __webpack_require__(167);
+google_maps = __webpack_require__(168);
 
 (function ($) {
     $(document).ready(function () {
@@ -30047,7 +30047,6 @@ google_maps = __webpack_require__(169);
         date_picker.init();
         guest_picker.init();
         booking_calculator.init();
-        google_maps.init();
     });
 })(jQuery);
 
@@ -63225,8 +63224,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(8)))
 
 /***/ }),
-/* 162 */,
-/* 163 */
+/* 162 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -63260,11 +63258,11 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var flatpickr = __webpack_require__(165).default;
+var flatpickr = __webpack_require__(164).default;
 var moment = __webpack_require__(0);
 
 module.exports = function () {
@@ -63311,7 +63309,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* flatpickr v4.3.2, @license MIT */
@@ -65425,7 +65423,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -65688,10 +65686,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 166;
+webpackContext.id = 165;
 
 /***/ }),
-/* 167 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var moment = __webpack_require__(0);
@@ -65745,7 +65743,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 168 */
+/* 167 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -65869,7 +65867,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 169 */
+/* 168 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -65952,13 +65950,13 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 170 */
+/* 169 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 171 */
+/* 170 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,4 +1,4 @@
-@extends('profile.base')
+@extends('profile._base')
 
 @section('content')
 <h2>

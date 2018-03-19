@@ -1,4 +1,4 @@
-@extends('layouts.app-sidebar-right')
+@extends('layouts.2col-right-md')
 
 @section('sidebar')
 

@@ -1,7 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.1col')
 
 @section('content')
-<div class="container">
     <div class="row">
         @foreach( $properties as $property )
             <div class="col-md-3">
@@ -15,8 +14,6 @@
                 </div>
             
             </div>
-            
         @endforeach
     </div>
-</div>
 @endsection

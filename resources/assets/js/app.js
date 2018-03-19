@@ -40,7 +40,7 @@ google_maps = require('./google-maps');
         date_picker.init();
         guest_picker.init();
         booking_calculator.init();
-        google_maps.init()
+
     });
 
 })(jQuery);
