@@ -17,12 +17,12 @@ module.exports = function() {
 
     function setMap() {
 
-        defaultPosition = latLngHasValues() ? {lat: Number($lat.val()), lng: Number($lng.val()) } : {lat: -34.397, lng: 150.644};
+        defaultPosition = latLngHasValues() ? {lat: Number($lat.val()), lng: Number($lng.val()) } : {lat:0, lng: 0};
 
         map = new google.maps.Map( $map.get(0), {
             center: defaultPosition,
             zoom: 12
-        });               
+        });
         
     }
 

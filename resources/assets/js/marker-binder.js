@@ -3,11 +3,13 @@ module.exports = function(){
     var $prop = $('.prop');
     var markers, infoWindow, map, customImage, hoverImage;
 
-    function bind( _markers, _map, _customImage, _hoverImage ) {
+    function bind( _map, _markers, _icons ) {
+        markers = {} // clear
+
         map = _map;
         markers = _markers;
-        customImage = _customImage;
-        hoverImage = _hoverImage;
+        customImage = _icons.base;
+        hoverImage = _icons.hover;
 
         bindMarkerToProperties();
         bindPropertiesToMarkers();
@@ -31,7 +33,7 @@ module.exports = function(){
     }
 
     function bindPropertiesToMarkers() {
-        $prop.on('mouseenter', function() {
+        $prop.hover(function() {
             highlightMarker( $(this) );
         });
 
@@ -42,20 +44,16 @@ module.exports = function(){
 
     function highlightMarker( $el ) {
         var marker = markers['prop_' + $el.data('id')];
-        /* 
-        var newLabel = {label: label, fontSize: '10px'} */
         if( marker ) {
             marker.setZIndex(10);
             marker.setIcon(hoverImage);
-            marker.setAnimation(google.maps.Animation.BOUNCE);            
         }
     }
 
     function removeMarkerHighlight( $el ) {
         var marker = markers['prop_' + $el.data('id')];
         if( marker ) {
-            marker.setIcon(customImage);
-            marker.setAnimation(null);
+            marker.setIcon(customImage);            
             marker.setZIndex(5);
         }
     }

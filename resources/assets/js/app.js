@@ -31,17 +31,23 @@ date_picker = require('./date-range-picker');
 booking_calculator = require('./booking-calculator');
 guest_picker = require('./guest-picker');
 gmapsEditProperty = require('./gmaps-edit-property');
-gmapsSearchProperty = require('./gmaps-search-property');
+gmapsMain = require('./gmaps-main');
+gmapsMarkers = require('./gmaps-markers');
+gmapsPlaceSearch = require('./gmaps-place-search');
 markerBinder = require('./marker-binder');
+propertyListingAjax = require('./property-listing-ajax');
 
 (function($){
     $(document).ready(function (){
         
-        $('#prop_data').html('');
         deleteModal.init();
         date_picker.init();
         guest_picker.init();
-        booking_calculator.init();
+
+        if( $('#prop_data').length ){
+            $('#prop_data').html('');
+            booking_calculator.init();
+        }
         
     });
 
@@ -51,11 +57,14 @@ initMaps = function(){
     if( $('#gmap').is(':visible') ) {
         gmapsEditProperty.init();
     }
-
     if( $('#gmap_properties').is(':visible') ){
-        gmapsSearchProperty.init();
-        gmapsSearchProperty.onInit( markerBinder.init );
+        propertyListingAjax.init();
+        gmapsMain.init();
+        gmapsMarkers.init( gmapsMain.getMap() );
+        gmapsPlaceSearch.init(); 
+        
+        propertyListingAjax.onRender( gmapsMarkers.addMarkers );
+        gmapsMarkers.onMarkerAdded( markerBinder.init );
     }
-
 }
 

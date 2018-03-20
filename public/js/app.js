@@ -29848,17 +29848,23 @@ date_picker = __webpack_require__(160);
 booking_calculator = __webpack_require__(163);
 guest_picker = __webpack_require__(164);
 gmapsEditProperty = __webpack_require__(165);
-gmapsSearchProperty = __webpack_require__(166);
+gmapsMain = __webpack_require__(177);
+gmapsMarkers = __webpack_require__(176);
+gmapsPlaceSearch = __webpack_require__(178);
 markerBinder = __webpack_require__(167);
+propertyListingAjax = __webpack_require__(175);
 
 (function ($) {
     $(document).ready(function () {
 
-        $('#prop_data').html('');
         deleteModal.init();
         date_picker.init();
         guest_picker.init();
-        booking_calculator.init();
+
+        if ($('#prop_data').length) {
+            $('#prop_data').html('');
+            booking_calculator.init();
+        }
     });
 })(jQuery);
 
@@ -29866,10 +29872,14 @@ initMaps = function initMaps() {
     if ($('#gmap').is(':visible')) {
         gmapsEditProperty.init();
     }
-
     if ($('#gmap_properties').is(':visible')) {
-        gmapsSearchProperty.init();
-        gmapsSearchProperty.onInit(markerBinder.init);
+        propertyListingAjax.init();
+        gmapsMain.init();
+        gmapsMarkers.init(gmapsMain.getMap());
+        gmapsPlaceSearch.init();
+
+        propertyListingAjax.onRender(gmapsMarkers.addMarkers);
+        gmapsMarkers.onMarkerAdded(markerBinder.init);
     }
 };
 
@@ -54683,7 +54693,7 @@ module.exports = function () {
 
     function setMap() {
 
-        defaultPosition = latLngHasValues() ? { lat: Number($lat.val()), lng: Number($lng.val()) } : { lat: -34.397, lng: 150.644 };
+        defaultPosition = latLngHasValues() ? { lat: Number($lat.val()), lng: Number($lng.val()) } : { lat: 0, lng: 0 };
 
         map = new google.maps.Map($map.get(0), {
             center: defaultPosition,
@@ -54744,99 +54754,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 166 */
-/***/ (function(module, exports) {
-
-module.exports = function () {
-
-    var $map = $('#gmap_properties');
-    var $markers = $('#prop_markers');
-
-    var map,
-        defaultPosition,
-        markers = {},
-        customImage,
-        hoverImage;
-
-    function init() {
-        setMap();
-        addMarkers();
-    }
-
-    function onInit(callback) {
-        callback(markers, map, customImage, hoverImage);
-    }
-
-    function setMap() {
-
-        map = new google.maps.Map($map.get(0), {
-            center: { lat: 0, lng: 0 },
-            zoom: 2,
-            mapTypeControl: false,
-            streetViewControl: false,
-            zoomControlOptions: {
-                position: google.maps.ControlPosition.LEFT_TOP
-            }
-        });
-    }
-
-    function addMarkers() {
-        var markerData = JSON.parse($markers.html());
-
-        customImage = createCustomImage();
-        hoverImage = createCustomImage('hover');
-
-        markerData.forEach(function (el) {
-            if (el.lat && el.lng) {
-                markers['prop_' + el.id] = new google.maps.Marker({
-                    position: { lat: Number(el.lat), lng: Number(el.lng) },
-                    title: el.title,
-                    map: map,
-                    prop_id: el.id,
-                    icon: customImage,
-                    zIndex: 5
-                });
-
-                markers['prop_' + el.id].addListener('mouseover', function () {
-                    markers['prop_' + el.id].setIcon(hoverImage);
-                });
-
-                markers['prop_' + el.id].addListener('mouseout', function () {
-                    markers['prop_' + el.id].setIcon(customImage);
-                });
-            }
-        });
-    }
-
-    function createCustomImage() {
-        var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'base';
-
-
-        var imageUrl = type != 'base' ? $markers.data('pinhover') : $markers.data('pin');
-
-        var image = {
-            url: imageUrl,
-            // This marker is 20 pixels wide by 32 pixels high.
-            size: new google.maps.Size(25, 48),
-            // The origin for this image is (0, 0).
-            origin: new google.maps.Point(0, 0),
-            // The anchor for this image is the base of the flagpole at (0, 32).
-            anchor: new google.maps.Point(13, 48)
-        };
-        return image;
-    }
-
-    function getMarkers() {
-        return markers;
-    }
-
-    return {
-        init: init,
-        onInit: onInit
-    };
-}();
-
-/***/ }),
+/* 166 */,
 /* 167 */
 /***/ (function(module, exports) {
 
@@ -54845,11 +54763,13 @@ module.exports = function () {
     var $prop = $('.prop');
     var markers, infoWindow, map, customImage, hoverImage;
 
-    function bind(_markers, _map, _customImage, _hoverImage) {
+    function bind(_map, _markers, _icons) {
+        markers = {}; // clear
+
         map = _map;
         markers = _markers;
-        customImage = _customImage;
-        hoverImage = _hoverImage;
+        customImage = _icons.base;
+        hoverImage = _icons.hover;
 
         bindMarkerToProperties();
         bindPropertiesToMarkers();
@@ -54872,7 +54792,7 @@ module.exports = function () {
     }
 
     function bindPropertiesToMarkers() {
-        $prop.on('mouseenter', function () {
+        $prop.hover(function () {
             highlightMarker($(this));
         });
 
@@ -54883,12 +54803,9 @@ module.exports = function () {
 
     function highlightMarker($el) {
         var marker = markers['prop_' + $el.data('id')];
-        /* 
-        var newLabel = {label: label, fontSize: '10px'} */
         if (marker) {
             marker.setZIndex(10);
             marker.setIcon(hoverImage);
-            marker.setAnimation(google.maps.Animation.BOUNCE);
         }
     }
 
@@ -54896,7 +54813,6 @@ module.exports = function () {
         var marker = markers['prop_' + $el.data('id')];
         if (marker) {
             marker.setIcon(customImage);
-            marker.setAnimation(null);
             marker.setZIndex(5);
         }
     }
@@ -54917,6 +54833,207 @@ module.exports = function () {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */
+/***/ (function(module, exports) {
+
+module.exports = function () {
+
+    var $body = $('body');
+    var $properties = $('.property-listing');
+    var $paginationLink;
+    var callback;
+
+    function init() {
+        getProperties(getUrlParameter('page'));
+        onPaginate();
+    }
+
+    function onPaginate() {
+        $body.on('click', '.page-link', function (e) {
+            e.preventDefault();
+            var $el = $(this);
+            var url = $el.attr('href');
+
+            window.history.pushState("", "", url);
+            getProperties(getUrlParameter('page'));
+        });
+    }
+
+    function getProperties() {
+        var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+        axios.get('/p?page=' + page).then(function (result) {
+            $properties.html(result.data.html);
+
+            renderCompleted(result.data.markers, result.data.marker_icons);
+        });
+    }
+
+    function onRender(_callback) {
+        callback = _callback ? _callback : '';
+    }
+
+    function renderCompleted(data, icons) {
+        callback(data, icons);
+    }
+
+    // https://davidwalsh.name/query-string-javascript
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
+    return {
+        init: init,
+        onRender: onRender
+    };
+}();
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports) {
+
+module.exports = function () {
+
+    var map, callback;
+    var customImage = '';
+    var markers = {};
+
+    function init(_map) {
+        map = _map;
+    }
+
+    function addMarkers(_markers, icons) {
+
+        clearMarkers();
+
+        _markers.forEach(function (el) {
+            if (el.lat && el.lng) {
+                markers['prop_' + el.id] = new google.maps.Marker({
+                    position: { lat: Number(el.lat), lng: Number(el.lng) },
+                    title: el.title,
+                    map: map,
+                    prop_id: el.id,
+                    icon: icons.base,
+                    zIndex: 5
+                });
+
+                markers['prop_' + el.id].addListener('mouseover', function () {
+                    markers['prop_' + el.id].setIcon(icons.hover);
+                });
+
+                markers['prop_' + el.id].addListener('mouseout', function () {
+                    markers['prop_' + el.id].setIcon(icons.base);
+                });
+            }
+        });
+
+        setMapCenter();
+
+        callback(map, markers, icons);
+    }
+
+    function clearMarkers() {
+        Object.keys(markers).forEach(function (key) {
+            markers[key].setMap(null);
+        });
+        markers = {};
+    }
+
+    function onMarkerAdded(_callback) {
+        callback = _callback;
+    }
+
+    function setMapCenter() {
+        map.setCenter(markers[Object.keys(markers)[0]].position);
+    }
+
+    return {
+        init: init,
+        addMarkers: addMarkers,
+        onMarkerAdded: onMarkerAdded
+    };
+}();
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports) {
+
+module.exports = function () {
+
+    var $map = $('#gmap_properties');
+    var $markers;
+
+    var map,
+        defaultPosition,
+        markers = {},
+        customImage,
+        hoverImage;
+
+    function init() {
+        setMap();
+    }
+
+    function setMap() {
+
+        map = new google.maps.Map($map.get(0), {
+            center: { lat: 0, lng: 0 },
+            zoom: 5,
+            mapTypeControl: false,
+            streetViewControl: false,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.LEFT_TOP
+            }
+        });
+    }
+
+    function getMap() {
+        return map;
+    }
+
+    return {
+        init: init,
+        getMap: getMap
+    };
+}();
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports) {
+
+module.exports = function () {
+
+    var $search = $('#place_search');
+    var $clone = $search.clone().removeAttr('id').attr('name', 'position');
+    var searchbox;
+
+    function init() {
+        searchBox = new google.maps.places.SearchBox($search.get(0));
+        $clone.appendTo($search.parent());
+        searchBox.addListener('places_changed', function (places) {
+            places = searchBox.getPlaces();
+            if (places.length == 0) {
+                return;
+            }
+
+            var loc = places[0].geometry.location;
+            $clone.val(loc.lat() + '|' + loc.lng());
+        });
+    }
+
+    return {
+        init: init
+    };
+}();
 
 /***/ })
 /******/ ]);

@@ -3,22 +3,20 @@
 @section('content')
 <div class="row">
     <div class="col-md-8">
-        <div class="row">
-            @if($properties)
-            @foreach($properties as $property)
-                <div class="col-md-4">
-                    <div class="card mb-4 prop" id="prop_{{$property->id}}" data-id="{{$property->id}}">
-                        <div class="card-header"> {{ $property->title }} </div>
-                        <div class="card-body"> {{ $property->description }} </div>
-                        <a href=" {{ route('property.view', $property->id) }} " class="btn btn-primary"> View </a>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <form action="" method="POST" autocomplete="off">
+                    <div>
+                    <input type="text" class="form-control" id="place_search">
+                    <input type="text" class="form-control bg-white" id="check_in">
+                    <input type="text" class="form-control bg-white" id="check_out">
+                    <input type="text" class="form-control bg-white" name="guests"  placeholder="1 Guest" id="guests">
                     </div>
-                </div>
-            @endforeach
-            <script type="application/json" id="prop_markers" data-pin="{{ asset('storage/pin.png') }}" data-pinhover="{{ asset('storage/pin-hover.png')}}">
-                {!! $markers !!}
-            </script>
-            @endif
+                    <button class="btn btn-primary">Search</button>
+                </form>
+            </div>
         </div>
+        <div class="property-listing row"></div>
     </div>
     
 </div>

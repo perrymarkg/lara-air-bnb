@@ -17,6 +17,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['namespace' => 'Frontend'], function(){
+    Route::get('/p', 'PropertiesController@getProperties')->name('properties.ajax');
     Route::get('/properties', 'PropertiesController@index')->name('properties.index');
     Route::get('/property/{property}', 'PropertiesController@view')->name('property.view');
     
