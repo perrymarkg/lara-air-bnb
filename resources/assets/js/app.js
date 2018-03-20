@@ -63,6 +63,7 @@ initMaps = function(){
         gmapsMarkers.init( gmapsMain.getMap() );
         gmapsPlaceSearch.init(); 
         
+        gmapsPlaceSearch.onFormSubmit( propertyListingAjax.propertySearch );
         propertyListingAjax.onRender( gmapsMarkers.addMarkers );
         gmapsMarkers.onMarkerAdded( markerBinder.init );
     }

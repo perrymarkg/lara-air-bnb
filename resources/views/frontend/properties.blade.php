@@ -5,9 +5,9 @@
     <div class="col-md-8">
         <div class="row mb-3">
             <div class="col-md-12">
-                <form action="" method="POST" autocomplete="off">
+                <form method="POST" autocomplete="off" id="property_search">
                     <div>
-                    <input type="text" class="form-control" id="place_search">
+                    <input type="text" class="form-control" name="place" autocomplete="false" placeholder="Search for a place">
                     <input type="text" class="form-control bg-white" id="check_in">
                     <input type="text" class="form-control bg-white" id="check_out">
                     <input type="text" class="form-control bg-white" name="guests"  placeholder="1 Guest" id="guests">

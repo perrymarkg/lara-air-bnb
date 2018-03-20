@@ -29808,8 +29808,8 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(135);
-__webpack_require__(168);
-module.exports = __webpack_require__(169);
+__webpack_require__(174);
+module.exports = __webpack_require__(175);
 
 
 /***/ }),
@@ -29848,11 +29848,11 @@ date_picker = __webpack_require__(160);
 booking_calculator = __webpack_require__(163);
 guest_picker = __webpack_require__(164);
 gmapsEditProperty = __webpack_require__(165);
-gmapsMain = __webpack_require__(177);
-gmapsMarkers = __webpack_require__(176);
-gmapsPlaceSearch = __webpack_require__(178);
-markerBinder = __webpack_require__(167);
-propertyListingAjax = __webpack_require__(175);
+gmapsMain = __webpack_require__(166);
+gmapsMarkers = __webpack_require__(167);
+gmapsPlaceSearch = __webpack_require__(168);
+markerBinder = __webpack_require__(169);
+propertyListingAjax = __webpack_require__(170);
 
 (function ($) {
     $(document).ready(function () {
@@ -29878,6 +29878,7 @@ initMaps = function initMaps() {
         gmapsMarkers.init(gmapsMain.getMap());
         gmapsPlaceSearch.init();
 
+        gmapsPlaceSearch.onFormSubmit(propertyListingAjax.propertySearch);
         propertyListingAjax.onRender(gmapsMarkers.addMarkers);
         gmapsMarkers.onMarkerAdded(markerBinder.init);
     }
@@ -54754,8 +54755,166 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 166 */,
+/* 166 */
+/***/ (function(module, exports) {
+
+module.exports = function () {
+
+    var $map = $('#gmap_properties');
+    var $markers;
+
+    var map,
+        defaultPosition,
+        markers = {},
+        customImage,
+        hoverImage;
+
+    function init() {
+        setMap();
+    }
+
+    function setMap() {
+
+        map = new google.maps.Map($map.get(0), {
+            center: { lat: 0, lng: 0 },
+            zoom: 5,
+            mapTypeControl: false,
+            streetViewControl: false,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.LEFT_TOP
+            }
+        });
+    }
+
+    function getMap() {
+        return map;
+    }
+
+    return {
+        init: init,
+        getMap: getMap
+    };
+}();
+
+/***/ }),
 /* 167 */
+/***/ (function(module, exports) {
+
+module.exports = function () {
+
+    var map, callback;
+    var customImage = '';
+    var markers = {};
+
+    function init(_map) {
+        map = _map;
+    }
+
+    function addMarkers(_markers, icons) {
+
+        clearMarkers();
+
+        _markers.forEach(function (el) {
+            if (el.lat && el.lng) {
+                markers['prop_' + el.id] = new google.maps.Marker({
+                    position: { lat: Number(el.lat), lng: Number(el.lng) },
+                    title: el.title,
+                    map: map,
+                    prop_id: el.id,
+                    icon: icons.base,
+                    zIndex: 5
+                });
+
+                markers['prop_' + el.id].addListener('mouseover', function () {
+                    markers['prop_' + el.id].setIcon(icons.hover);
+                });
+
+                markers['prop_' + el.id].addListener('mouseout', function () {
+                    markers['prop_' + el.id].setIcon(icons.base);
+                });
+            }
+        });
+
+        setMapCenter();
+
+        callback(map, markers, icons);
+    }
+
+    function clearMarkers() {
+        Object.keys(markers).forEach(function (key) {
+            markers[key].setMap(null);
+        });
+        markers = {};
+    }
+
+    function onMarkerAdded(_callback) {
+        callback = _callback;
+    }
+
+    function setMapCenter() {
+        if (markers.length) map.setCenter(markers[Object.keys(markers)[0]].position);
+    }
+
+    return {
+        init: init,
+        addMarkers: addMarkers,
+        onMarkerAdded: onMarkerAdded
+    };
+}();
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports) {
+
+module.exports = function () {
+    var $form = $('#property_search');
+    var $place = $form.find('input[name="place"]');
+    var $position = $place.clone().removeAttr('id').attr('name', 'position');
+    var $checkIn = $('#check_in');
+    var $checkOut = $('#check_out');
+    var $guests = $('#guests');
+    var searchbox,
+        callback = function callback(checkIn, checkOut, guests, position) {};
+
+    function init() {
+        setForm();
+        setPlacesSearch();
+    }
+
+    function setForm() {
+        $form.submit(function (e) {
+            e.preventDefault();
+            callback($checkIn.val(), $checkOut.val(), $guests.val(), $position.val());
+        });
+    }
+
+    function onFormSubmit(_callback) {
+        callback = _callback;
+    }
+
+    function setPlacesSearch() {
+        searchBox = new google.maps.places.SearchBox($place.get(0));
+        $position.appendTo($place.parent());
+        searchBox.addListener('places_changed', function (places) {
+            places = searchBox.getPlaces();
+            if (places.length == 0) {
+                return;
+            }
+
+            var loc = places[0].geometry.location;
+            var val = { lat: loc.lat(), loc: loc.lng() };
+            $position.val(JSON.stringify(val));
+        });
+    }
+
+    return {
+        init: init,
+        onFormSubmit: onFormSubmit
+    };
+}();
+
+/***/ }),
+/* 169 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -54823,35 +54982,20 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 168 */
-/***/ (function(module, exports) {
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 169 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */
-/***/ (function(module, exports) {
-
+queryString = __webpack_require__(171);
 module.exports = function () {
 
     var $body = $('body');
     var $properties = $('.property-listing');
-    var $paginationLink;
-    var callback;
+    var callback = function callback(data, icons) {};
+    var ajaxUrl = '/p';
+    var Turl;
 
     function init() {
-        getProperties(getUrlParameter('page'));
+        getProperties();
         onPaginate();
     }
 
@@ -54862,12 +55006,19 @@ module.exports = function () {
             var url = $el.attr('href');
 
             window.history.pushState("", "", url);
-            getProperties(getUrlParameter('page'));
+            getProperties();
         });
+    }
+
+    function buildUrl() {
+        var q = queryString.parseUrl(location.search);
+        console.log(q);
     }
 
     function getProperties() {
         var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+        buildUrl();
 
         axios.get('/p?page=' + page).then(function (result) {
             $properties.html(result.data.html);
@@ -54884,6 +55035,16 @@ module.exports = function () {
         callback(data, icons);
     }
 
+    function propertySearch(checkIn, checkOut, guests, location) {
+        var url = '/p?page=1&check_in=' + encodeURI(checkIn) + '&check_out=' + encodeURI(checkOut) + '&guests=' + encodeURI(guests) + '&location=' + encodeURI(location);
+
+        axios.get(url).then(function (result) {
+            $properties.html(result.data.html);
+
+            renderCompleted(result.data.markers, result.data.marker_icons);
+        });
+    }
+
     // https://davidwalsh.name/query-string-javascript
     function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -54894,146 +55055,353 @@ module.exports = function () {
 
     return {
         init: init,
-        onRender: onRender
+        onRender: onRender,
+        propertySearch: propertySearch
     };
 }();
 
 /***/ }),
-/* 176 */
-/***/ (function(module, exports) {
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function () {
+"use strict";
 
-    var map, callback;
-    var customImage = '';
-    var markers = {};
+const strictUriEncode = __webpack_require__(172);
+const decodeComponent = __webpack_require__(173);
 
-    function init(_map) {
-        map = _map;
-    }
+function encoderForArrayFormat(options) {
+	switch (options.arrayFormat) {
+		case 'index':
+			return (key, value, index) => {
+				return value === null ? [
+					encode(key, options),
+					'[',
+					index,
+					']'
+				].join('') : [
+					encode(key, options),
+					'[',
+					encode(index, options),
+					']=',
+					encode(value, options)
+				].join('');
+			};
+		case 'bracket':
+			return (key, value) => {
+				return value === null ? encode(key, options) : [
+					encode(key, options),
+					'[]=',
+					encode(value, options)
+				].join('');
+			};
+		default:
+			return (key, value) => {
+				return value === null ? encode(key, options) : [
+					encode(key, options),
+					'=',
+					encode(value, options)
+				].join('');
+			};
+	}
+}
 
-    function addMarkers(_markers, icons) {
+function parserForArrayFormat(options) {
+	let result;
 
-        clearMarkers();
+	switch (options.arrayFormat) {
+		case 'index':
+			return (key, value, accumulator) => {
+				result = /\[(\d*)\]$/.exec(key);
 
-        _markers.forEach(function (el) {
-            if (el.lat && el.lng) {
-                markers['prop_' + el.id] = new google.maps.Marker({
-                    position: { lat: Number(el.lat), lng: Number(el.lng) },
-                    title: el.title,
-                    map: map,
-                    prop_id: el.id,
-                    icon: icons.base,
-                    zIndex: 5
-                });
+				key = key.replace(/\[\d*\]$/, '');
 
-                markers['prop_' + el.id].addListener('mouseover', function () {
-                    markers['prop_' + el.id].setIcon(icons.hover);
-                });
+				if (!result) {
+					accumulator[key] = value;
+					return;
+				}
 
-                markers['prop_' + el.id].addListener('mouseout', function () {
-                    markers['prop_' + el.id].setIcon(icons.base);
-                });
-            }
-        });
+				if (accumulator[key] === undefined) {
+					accumulator[key] = {};
+				}
 
-        setMapCenter();
+				accumulator[key][result[1]] = value;
+			};
+		case 'bracket':
+			return (key, value, accumulator) => {
+				result = /(\[\])$/.exec(key);
+				key = key.replace(/\[\]$/, '');
 
-        callback(map, markers, icons);
-    }
+				if (!result) {
+					accumulator[key] = value;
+					return;
+				}
 
-    function clearMarkers() {
-        Object.keys(markers).forEach(function (key) {
-            markers[key].setMap(null);
-        });
-        markers = {};
-    }
+				if (accumulator[key] === undefined) {
+					accumulator[key] = [value];
+					return;
+				}
 
-    function onMarkerAdded(_callback) {
-        callback = _callback;
-    }
+				accumulator[key] = [].concat(accumulator[key], value);
+			};
+		default:
+			return (key, value, accumulator) => {
+				if (accumulator[key] === undefined) {
+					accumulator[key] = value;
+					return;
+				}
 
-    function setMapCenter() {
-        map.setCenter(markers[Object.keys(markers)[0]].position);
-    }
+				accumulator[key] = [].concat(accumulator[key], value);
+			};
+	}
+}
 
-    return {
-        init: init,
-        addMarkers: addMarkers,
-        onMarkerAdded: onMarkerAdded
-    };
-}();
+function encode(value, options) {
+	if (options.encode) {
+		return options.strict ? strictUriEncode(value) : encodeURIComponent(value);
+	}
+
+	return value;
+}
+
+function keysSorter(input) {
+	if (Array.isArray(input)) {
+		return input.sort();
+	}
+
+	if (typeof input === 'object') {
+		return keysSorter(Object.keys(input))
+			.sort((a, b) => Number(a) - Number(b))
+			.map(key => input[key]);
+	}
+
+	return input;
+}
+
+function extract(input) {
+	const queryStart = input.indexOf('?');
+	if (queryStart === -1) {
+		return '';
+	}
+	return input.slice(queryStart + 1);
+}
+
+function parse(input, options) {
+	options = Object.assign({arrayFormat: 'none'}, options);
+
+	const formatter = parserForArrayFormat(options);
+
+	// Create an object with no prototype
+	const ret = Object.create(null);
+
+	if (typeof input !== 'string') {
+		return ret;
+	}
+
+	input = input.trim().replace(/^[?#&]/, '');
+
+	if (!input) {
+		return ret;
+	}
+
+	for (const param of input.split('&')) {
+		let [key, value] = param.replace(/\+/g, ' ').split('=');
+
+		// Missing `=` should be `null`:
+		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+		value = value === undefined ? null : decodeComponent(value);
+
+		formatter(decodeComponent(key), value, ret);
+	}
+
+	return Object.keys(ret).sort().reduce((result, key) => {
+		const value = ret[key];
+		if (Boolean(value) && typeof value === 'object' && !Array.isArray(value)) {
+			// Sort object keys, not values
+			result[key] = keysSorter(value);
+		} else {
+			result[key] = value;
+		}
+
+		return result;
+	}, Object.create(null));
+}
+
+exports.extract = extract;
+exports.parse = parse;
+
+exports.stringify = (obj, options) => {
+	const defaults = {
+		encode: true,
+		strict: true,
+		arrayFormat: 'none'
+	};
+
+	options = Object.assign(defaults, options);
+
+	if (options.sort === false) {
+		options.sort = () => {};
+	}
+
+	const formatter = encoderForArrayFormat(options);
+
+	return obj ? Object.keys(obj).sort(options.sort).map(key => {
+		const value = obj[key];
+
+		if (value === undefined) {
+			return '';
+		}
+
+		if (value === null) {
+			return encode(key, options);
+		}
+
+		if (Array.isArray(value)) {
+			const result = [];
+
+			for (const value2 of value.slice()) {
+				if (value2 === undefined) {
+					continue;
+				}
+
+				result.push(formatter(key, value2, result.length));
+			}
+
+			return result.join('&');
+		}
+
+		return encode(key, options) + '=' + encode(value, options);
+	}).filter(x => x.length > 0).join('&') : '';
+};
+
+exports.parseUrl = (input, options) => {
+	return {
+		url: input.split('?')[0] || '',
+		query: parse(extract(input), options)
+	};
+};
+
 
 /***/ }),
-/* 177 */
-/***/ (function(module, exports) {
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function () {
+"use strict";
 
-    var $map = $('#gmap_properties');
-    var $markers;
+module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
 
-    var map,
-        defaultPosition,
-        markers = {},
-        customImage,
-        hoverImage;
-
-    function init() {
-        setMap();
-    }
-
-    function setMap() {
-
-        map = new google.maps.Map($map.get(0), {
-            center: { lat: 0, lng: 0 },
-            zoom: 5,
-            mapTypeControl: false,
-            streetViewControl: false,
-            zoomControlOptions: {
-                position: google.maps.ControlPosition.LEFT_TOP
-            }
-        });
-    }
-
-    function getMap() {
-        return map;
-    }
-
-    return {
-        init: init,
-        getMap: getMap
-    };
-}();
 
 /***/ }),
-/* 178 */
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var token = '%[a-f0-9]{2}';
+var singleMatcher = new RegExp(token, 'gi');
+var multiMatcher = new RegExp('(' + token + ')+', 'gi');
+
+function decodeComponents(components, split) {
+	try {
+		// Try to decode the entire string first
+		return decodeURIComponent(components.join(''));
+	} catch (err) {
+		// Do nothing
+	}
+
+	if (components.length === 1) {
+		return components;
+	}
+
+	split = split || 1;
+
+	// Split the array in 2 parts
+	var left = components.slice(0, split);
+	var right = components.slice(split);
+
+	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
+}
+
+function decode(input) {
+	try {
+		return decodeURIComponent(input);
+	} catch (err) {
+		var tokens = input.match(singleMatcher);
+
+		for (var i = 1; i < tokens.length; i++) {
+			input = decodeComponents(tokens, i).join('');
+
+			tokens = input.match(singleMatcher);
+		}
+
+		return input;
+	}
+}
+
+function customDecodeURIComponent(input) {
+	// Keep track of all the replacements and prefill the map with the `BOM`
+	var replaceMap = {
+		'%FE%FF': '\uFFFD\uFFFD',
+		'%FF%FE': '\uFFFD\uFFFD'
+	};
+
+	var match = multiMatcher.exec(input);
+	while (match) {
+		try {
+			// Decode as big chunks as possible
+			replaceMap[match[0]] = decodeURIComponent(match[0]);
+		} catch (err) {
+			var result = decode(match[0]);
+
+			if (result !== match[0]) {
+				replaceMap[match[0]] = result;
+			}
+		}
+
+		match = multiMatcher.exec(input);
+	}
+
+	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
+	replaceMap['%C2'] = '\uFFFD';
+
+	var entries = Object.keys(replaceMap);
+
+	for (var i = 0; i < entries.length; i++) {
+		// Replace all decoded components
+		var key = entries[i];
+		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
+	}
+
+	return input;
+}
+
+module.exports = function (encodedURI) {
+	if (typeof encodedURI !== 'string') {
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
+	}
+
+	try {
+		encodedURI = encodedURI.replace(/\+/g, ' ');
+
+		// Try the built in decoder first
+		return decodeURIComponent(encodedURI);
+	} catch (err) {
+		// Fallback to a more advanced decoder
+		return customDecodeURIComponent(encodedURI);
+	}
+};
+
+
+/***/ }),
+/* 174 */
 /***/ (function(module, exports) {
 
-module.exports = function () {
+// removed by extract-text-webpack-plugin
 
-    var $search = $('#place_search');
-    var $clone = $search.clone().removeAttr('id').attr('name', 'position');
-    var searchbox;
+/***/ }),
+/* 175 */
+/***/ (function(module, exports) {
 
-    function init() {
-        searchBox = new google.maps.places.SearchBox($search.get(0));
-        $clone.appendTo($search.parent());
-        searchBox.addListener('places_changed', function (places) {
-            places = searchBox.getPlaces();
-            if (places.length == 0) {
-                return;
-            }
-
-            var loc = places[0].geometry.location;
-            $clone.val(loc.lat() + '|' + loc.lng());
-        });
-    }
-
-    return {
-        init: init
-    };
-}();
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

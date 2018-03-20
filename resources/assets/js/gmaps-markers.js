@@ -50,6 +50,7 @@ module.exports = function(){
     }
 
     function setMapCenter() {
+        if( markers.length )
         map.setCenter( markers[Object.keys(markers)[0]].position );
     }
 

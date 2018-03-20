@@ -39,10 +39,24 @@ class PropertiesController extends Controller
         return view('frontend.property-view', $data);
     }
     
-    public function getProperties()
+    public function getProperties(Request $request)
     {
         $properties = Property::paginate(3);
         $properties->withPath('properties');
+
+        if($request->check_in) {
+            $properties->appends(['check_in' => $properties->chcek_out]);
+        }
+        if( $request->check_out ) {
+            $properties->appends(['check_out' => $properties->check_out]);
+        }
+        if( $request->location) {
+            $properties->appends(['location' => $properties->location]);
+        }
+        if( $request->guests ) {
+            $properties->appends(['guests' => $request->guests]);
+        }
+
         foreach($properties as $prop) {
             $markers[] = [
                 'id' => $prop->id,
@@ -52,7 +66,7 @@ class PropertiesController extends Controller
                 'title' => $prop->title
             ];
         }
-         $data['html'] = view('components.property-listing', compact('properties'))->render();
+        $data['html'] = view('components.property-listing', compact('properties'))->render();
         
         $data['markers'] = $markers;
         $data['marker_icons'] = ['base' => asset('storage/pin.png'), 'hover' => asset('storage/pin-hover.png')];

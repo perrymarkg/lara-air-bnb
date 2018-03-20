@@ -1,12 +1,32 @@
 module.exports = function(){
-
-    var $search = $('#place_search');
-    var $clone = $search.clone().removeAttr('id').attr('name', 'position');
-    var searchbox;
+    var $form = $('#property_search');
+    var $place = $form.find('input[name="place"]');
+    var $position = $place.clone().removeAttr('id').attr('name', 'position');
+    var $checkIn = $('#check_in');
+    var $checkOut = $('#check_out');
+    var $guests = $('#guests');
+    var searchbox, callback = function(checkIn, checkOut, guests, position){};
 
     function init() {
-        searchBox = new google.maps.places.SearchBox( $search.get(0) );
-        $clone.appendTo( $search.parent() );
+        setForm();
+        setPlacesSearch();
+    }
+
+    function setForm() {
+        $form.submit( function(e){
+            e.preventDefault();
+            callback($checkIn.val(), $checkOut.val(), $guests.val(), $position.val());
+            
+        })
+    }
+
+    function onFormSubmit( _callback ) {
+        callback = _callback;
+    }
+
+    function setPlacesSearch() {
+        searchBox = new google.maps.places.SearchBox( $place.get(0) );
+        $position.appendTo( $place.parent() );
         searchBox.addListener('places_changed', function(places){
             places = searchBox.getPlaces();
             if (places.length == 0) {
@@ -14,12 +34,14 @@ module.exports = function(){
             }
 
             var loc = places[0].geometry.location
-            $clone.val(loc.lat() + '|' + loc.lng());
+            var val = {lat: loc.lat(), loc:loc.lng()};
+            $position.val(JSON.stringify(val));
         });
     }
 
     return {
-        init: init
+        init: init,
+        onFormSubmit: onFormSubmit
     }
 
 }();
