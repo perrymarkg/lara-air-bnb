@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-//window.Vue = require('vue');
+window.Vue = require('vue');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -14,11 +14,12 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-/* Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('guest-picker', require('./components/GuestPickerComponent.vue'));
 
 const app = new Vue({
     el: '#app'
-}); */
+});
 
 // Main
 
@@ -29,7 +30,7 @@ if($('#prop_data').length)
 deleteModal = require('./modal');
 date_picker = require('./date-range-picker');
 booking_calculator = require('./booking-calculator');
-guest_picker = require('./guest-picker');
+//guest_picker = require('./guest-picker');
 gmapsEditProperty = require('./gmaps-edit-property');
 gmapsMain = require('./gmaps-main');
 gmapsMarkers = require('./gmaps-markers');
@@ -42,7 +43,7 @@ propertyListingAjax = require('./property-listing-ajax');
         
         deleteModal.init();
         date_picker.init();
-        guest_picker.init();
+        //guest_picker.init();
 
         if( $('#prop_data').length ){
             $('#prop_data').html('');

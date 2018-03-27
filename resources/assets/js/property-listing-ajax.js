@@ -25,7 +25,9 @@ module.exports = function () {
 
     function buildUrl() {
         var q = queryString.parseUrl(location.search);
-        console.log(q);
+        Turl = ajaxUrl;
+        //if(q.query.page)
+            
     }
 
     function getProperties(page = 1) {

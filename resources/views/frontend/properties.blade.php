@@ -5,6 +5,7 @@
     <div class="col-md-8">
         <div class="row mb-3">
             <div class="col-md-12">
+                <example-component></example-component>
                 <form method="POST" autocomplete="off" id="property_search">
                     <div>
                     <input type="text" class="form-control" name="place" autocomplete="false" placeholder="Search for a place">
