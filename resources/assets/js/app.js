@@ -16,6 +16,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('guest-picker', require('./components/GuestPickerComponent.vue'));
+Vue.component('google-map', require('./components/MapComponent.vue'));
 
 const app = new Vue({
     el: '#app'

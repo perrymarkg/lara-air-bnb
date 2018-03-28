@@ -1,3 +1,9 @@
+<?php 
+    $center = json_encode([
+        'lat' => $property->lat || old('lat') ? (float) Helper::displayInputValue( old('lat'), $property->lat) : 0, 
+        'lng' => $property->lng || old('lng') ? (float) Helper::displayInputValue( old('lng'), $property->lng) : 0
+    ]);
+?>
 <form action="{{ $submit_url }}" method="POST" class="form bg-white p-3 rounded border">
     {{ csrf_field() }}
     @if( $mode == 'edit')
@@ -32,22 +38,13 @@
             For a more precise control, zoom in the map and position the marker.
         </small>
         
-        <input 
-            type="hidden" 
-            name="lat" 
-            id="map_lat" 
-            value="{{ Helper::displayInputValue( old('lat'), $property->lat) }}"             
-            readonly/>
-        <input 
-            type="hidden" 
-            name="lng" 
-            id="map_lng" 
-            value="{{ Helper::displayInputValue( old('lng'), $property->lng) }}"
-            readonly/>
-        <div class="gmap-wrapper">
-            <input type="text" class="form-control form-control-sm" id="gmap_search" placeholder="Search City, Town or Country"/>
-            <div id="gmap" style="width:100%;height:300px;"></div>
-        </div>
+        <google-map 
+            name="property-edit" 
+            v-bind:search="true"
+            v-bind:center={!! $center !!}
+            >
+        </google-map>
+        
         
     </div>
     <div class="form-row">
