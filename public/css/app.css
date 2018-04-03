@@ -10012,35 +10012,36 @@ main {
   display: none;
 }
 
-.guest-picker {
+/* .guest-picker {
+
   position: absolute;
-  display: none;
-  background: #ffffff;
+  display:none;
+  background:#ffffff;
   width: 300px;
-  -webkit-animation: fpFadeInDown 200ms cubic-bezier(0.23, 1, 0.32, 1);
-          animation: fpFadeInDown 200ms cubic-bezier(0.23, 1, 0.32, 1);
-}
+  animation: fpFadeInDown 200ms cubic-bezier(.23,1,.32,1);
 
-.guest-picker:before {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-  border: solid transparent;
-  content: '';
-  height: 0;
-  width: 0;
-  left: 22px;
-  border-width: 5px;
-  margin: 0 -5px;
-  border-bottom-color: #ffffff;
-  top: -10px;
-}
+  &:before {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    border: solid transparent;
+    content: '';
+    height: 0;
+    width: 0;
+    left: 22px;
+    border-width: 5px;
+    margin: 0 -5px;
+    border-bottom-color: #ffffff;
+    top:-10px;
+  }
 
-.guest-picker .adult-input,
-.guest-picker .child-input {
-  background: transparent;
-  width: 100%;
-}
+  .adult-input,
+  .child-input {
+    background:transparent;
+    width: 100%;
+  }
+
+} */
 
 .gmap-wrapper {
   width: 100%;

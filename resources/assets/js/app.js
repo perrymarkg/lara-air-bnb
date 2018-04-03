@@ -17,6 +17,8 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('guest-picker', require('./components/GuestPickerComponent.vue'));
 Vue.component('google-map', require('./components/MapComponent.vue'));
+Vue.component('guest-picker', require('./vue-ui/ItemPicker.vue'));
+Vue.component('property-calculator', require('./components/PropertyCalculator.vue'));
 
 const app = new Vue({
     el: '#app'
@@ -41,7 +43,7 @@ propertyListingAjax = require('./property-listing-ajax');
 
 (function($){
     $(document).ready(function (){
-        
+        propertyListingAjax.init();
         deleteModal.init();
         date_picker.init();
         //guest_picker.init();

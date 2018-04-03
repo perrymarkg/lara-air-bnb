@@ -25,6 +25,7 @@
         "flatpickr": "^4.3.2",
         "moment": "^2.21.0",
         "query-string": "^6.0.0",
-        "vue-hotel-datepicker": "^2.2.0"
+        "vue-hotel-datepicker": "^2.2.0",
+        "vue-on-click-outside": "^1.0.3"
     }
 }
